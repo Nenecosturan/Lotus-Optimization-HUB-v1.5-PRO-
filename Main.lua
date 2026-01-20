@@ -195,7 +195,7 @@ TabAggressive:CreateButton({
 
 TabAggressive:CreateSection("Physics Optimization")
 TabAggressive:CreateButton({
-   Name = "PvP Mode (No Accessories/Skins)",
+   Name = "PVP MODE (No Accessories/Skins)",
    Callback = function()
        for _, player in pairs(Players:GetPlayers()) do
            if player ~= Players.LocalPlayer and player.Character then
