@@ -32,7 +32,7 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
    Name = "Lotus •|• Optimization HUB v2.5 PRO+",
    LoadingTitle = "L.A.I.S Loading...",
-   LoadingSubtitle = "Initializing System...",
+   LoadingSubtitle = "Finding Latest Pro version...",
    Theme = "Ocean", 
    
    ConfigurationSaving = {
@@ -139,7 +139,7 @@ TabBalanced:CreateButton({
 })
 
 TabBalanced:CreateButton({
-   Name = "Hide All Particles (Safe Mode)",
+   Name = "Hide All Particles",
    Callback = function()
        safeHideVisuals(Workspace)
        notify("Balanced Opt", "Particles hidden.")
@@ -234,7 +234,7 @@ TabNuclear:CreateButton({
        for _, v in pairs(Workspace:GetDescendants()) do
            if v:IsA("BasePart") then v.Transparency = 1 end
        end
-       notify("NUCLEAR", "Map is now invisible.")
+       notify("NUCLEAR", "Wait at least 2 minutes to see the effects.")
    end,
 })
 
@@ -310,7 +310,7 @@ TabAI:CreateToggle({
 TabAI:CreateSection("ENGINEERING (PRO FEATURES)")
 
 TabAI:CreateToggle({
-   Name = "Active Frustum Culling (Camera Render)",
+   Name = "Active Frustum Culling (BETA)",
    CurrentValue = false,
    Callback = function(Value)
        _G.FrustumCulling = Value
@@ -371,7 +371,7 @@ end
 -- // 9. TAB: ALTERNATIVES (EXTERNAL) \\ --
 local TabAlt = Window:CreateTab("Alternatives", 4483362458)
 TabAlt:CreateButton({
-   Name = "Load Titanium Gen2 AI",
+   Name = "Load Titanium Gen2 AI(highly recommended)",
    Callback = function()
        notify("Loader", "Injecting Titanium Optimizer...")
        loadstring(game:HttpGet("https://raw.githubusercontent.com/Nenecosturan/Titanium-Optimizer-Gen2-AI/refs/heads/main/Main.lua"))()
@@ -452,7 +452,7 @@ TabTools:CreateButton({
 
 TabTools:CreateSlider({
    Name = "FPS Cap Limit",
-   Range = {30, 720},
+   Range = {30, 1080},
    Increment = 1,
    Suffix = "FPS",
    CurrentValue = 60,
@@ -467,7 +467,7 @@ TabVisuals:CreateSection("Camera Engineering")
 
 TabVisuals:CreateSlider({
    Name = "Field of View (FOV)",
-   Range = {70, 120},
+   Range = {70, 150},
    Increment = 1,
    Suffix = "°",
    CurrentValue = 70,
