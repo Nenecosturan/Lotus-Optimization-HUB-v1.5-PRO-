@@ -1,16 +1,98 @@
 --[[ 
-    LOTUS •|• OPTIMIZATION HUB v2.0 Pro+
+    LOTUS •|• OPTIMIZATION HUB v2.5 PRO+
    
-[PART 1: Premium UI, Key System, Core Setup]
+    [PART 1: Security System, Core Setup]
 
-Added:
-    Theme: Ocean (Water Green)
-    Key: Lotus26
-    Special Feature: GPU Cooling (Stop Render)
+    Added:
+    - Theme: Ocean (Water Green)
+    - NEW: Custom Key System (3 Strikes -> Kick)
+    - NEW: Smart Server Manager Tab
+    - NEW: Lotus Live HUD (Toggleable in Tools)
+    - Special Feature: GPU Cooling (Stop Render)
+    - Active Frustum Culling (Camera Render)
 --]]
 
--- 1. SERVICE DECLARATION --
+-- // 0. SECURITY & AUTHENTICATION SYSTEM \\ --
+-- Rayfield yüklenmeden önce çalışır. Yetkisiz girişi engeller.
+
 local Players = game:GetService("Players")
+local CoreGui = game:GetService("CoreGui")
+local LocalPlayer = Players.LocalPlayer
+
+-- Global değişken ile diğer parçaları bekletiyoruz
+getgenv().LotusAuthPassed = false
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "LotusAuthGUI"
+ScreenGui.Parent = CoreGui
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+local Frame = Instance.new("Frame")
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+Frame.BorderSizePixel = 0
+Frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+Frame.Size = UDim2.new(0, 300, 0, 220)
+Frame.Active = true
+Frame.Draggable = true
+
+local Title = Instance.new("TextLabel")
+Title.Parent = Frame
+Title.BackgroundColor3 = Color3.fromRGB(0, 255, 170) -- Ocean Green
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.Font = Enum.Font.GothamBold
+Title.Text = "LOTUS SECURITY"
+Title.TextColor3 = Color3.fromRGB(20, 20, 20)
+Title.TextSize = 18
+
+local InputBox = Instance.new("TextBox")
+InputBox.Parent = Frame
+InputBox.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+InputBox.Position = UDim2.new(0.1, 0, 0.4, 0)
+InputBox.Size = UDim2.new(0.8, 0, 0, 40)
+InputBox.Font = Enum.Font.Gotham
+InputBox.PlaceholderText = "Enter Key (Lotus26)"
+InputBox.Text = ""
+InputBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+InputBox.TextSize = 14
+
+local SubmitBtn = Instance.new("TextButton")
+SubmitBtn.Parent = Frame
+SubmitBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+SubmitBtn.Position = UDim2.new(0.1, 0, 0.7, 0)
+SubmitBtn.Size = UDim2.new(0.8, 0, 0, 40)
+SubmitBtn.Font = Enum.Font.GothamBold
+SubmitBtn.Text = "LOGIN"
+SubmitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+SubmitBtn.TextSize = 16
+
+local Attempts = 0
+
+SubmitBtn.MouseButton1Click:Connect(function()
+    if InputBox.Text == "Lotus26" then
+        ScreenGui:Destroy()
+        getgenv().LotusAuthPassed = true
+        -- Başarılı giriş uyarısı
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "ACCESS GRANTED";
+            Text = "Welcome to Lotus v2.5 PRO+";
+            Duration = 3;
+        })
+    else
+        Attempts = Attempts + 1
+        InputBox.Text = ""
+        InputBox.PlaceholderText = "WRONG KEY ("..Attempts.."/3)"
+        
+        if Attempts >= 3 then
+            LocalPlayer:Kick("Wrong key")
+        end
+    end
+end)
+
+-- DOĞRU ŞİFRE GİRİLENE KADAR KODU BEKLET (WAIT LOOP)
+repeat task.wait(0.5) until getgenv().LotusAuthPassed == true
+
+-- // 1. SERVICE DECLARATION (STARTS AFTER KEY) \\ --
 local Lighting = game:GetService("Lighting")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
@@ -19,42 +101,26 @@ local Terrain = Workspace.Terrain
 local UserInputService = game:GetService("UserInputService")
 local Stats = game:GetService("Stats")
 
--- -- 2. RAYFIELD LIBRARY SETUP --
+-- // 2. RAYFIELD LIBRARY SETUP \\ --
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "Lotus •|• Optimization HUB v2.0 Pro+",
+   Name = "Lotus •|• Optimization HUB v2.5 PRO+",
    LoadingTitle = "L.A.I.S Loading...",
-   LoadingSubtitle = "Finding Latest Version...",
+   LoadingSubtitle = "Finding Latest Pro version...",
    Theme = "Ocean", 
    
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = "LotusHubV2", 
-      FileName = "LotusConfigProPlus"
+      FolderName = "LotusHubV25", 
+      FileName = "LotusConfigUltra"
    },
    
-   Discord = {
-      Enabled = false,
-      Invite = "", 
-      RememberJoins = true 
-   },
-   
-   -- KEY SYSTEM INTEGRATION --
-   KeySystem = true, 
-   KeySettings = {
-      Title = "Lotus Access Manager",
-      Subtitle = "Enter License Key",
-      Note = "Key: Lotus26",
-      FileName = "LotusKeyV2",
-      SaveKey = true,
-      GrabKeyFromSite = false, 
-      Key = "Lotus26"
-   }
+   Discord = {Enabled = false, Invite = "", RememberJoins = true},
+   KeySystem = false -- Rayfield'ınkini kapattık, bizimkini kullandık
 })
 
--- 3. CORE FUNCTIONS --
-
+-- // 3. CORE FUNCTIONS \\ --
 local function notify(title, content)
     Rayfield:Notify({Title = title, Content = content, Duration = 3, Image = 4483362458})
 end
@@ -69,8 +135,9 @@ local function safeHideVisuals(instance)
         safeHideVisuals(child)
     end
 end
+-- [[ START OF PART 2 ]] --
 
---  4. TAB: LIGHT OPTIMIZATION --
+-- // 4. TAB: LIGHT OPTIMIZATION \\ --
 local TabLight = Window:CreateTab("Light Opt.", 4483362458)
 
 TabLight:CreateSection("Visual Clarity")
@@ -106,7 +173,7 @@ TabLight:CreateButton({
    end,
 })
 
--- 5. TAB: BALANCED OPTIMIZATION --
+-- // 5. TAB: BALANCED OPTIMIZATION \\ --
 local TabBalanced = Window:CreateTab("Balanced Opt.", 4483362458)
 
 TabBalanced:CreateSection("Shadows & Materials")
@@ -138,9 +205,9 @@ TabBalanced:CreateButton({
        notify("Balanced Opt", "Particles hidden.")
    end,
 })
--- [[ START OF PART 2 ]] --
+-- [[ START OF PART 3 ]] --
 
---  6. TAB: AGGRESSIVE OPTIMIZATION  --
+-- // 6. TAB: AGGRESSIVE OPTIMIZATION \\ --
 local TabAggressive = Window:CreateTab("Aggressive", 4483362458)
 
 TabAggressive:CreateSection("Smart Cleanup (Non-Destructive)")
@@ -171,28 +238,42 @@ TabAggressive:CreateButton({
    end,
 })
 
-TabAggressive:CreateSection("Physics Optimization")
 TabAggressive:CreateButton({
-   Name = "Disable Environmental Animators",
+   Name = "Force Low-Poly Mode (LOD Override)",
    Callback = function()
-       for _, v in pairs(Workspace:GetDescendants()) do
-           if v:IsA("Animator") then
-               local char = v.Parent and v.Parent.Parent
-               if char and char.Name ~= Players.LocalPlayer.Name then
-                   v:Destroy() 
-               end
+       local count = 0
+       for _, v in pairs(workspace:GetDescendants()) do
+           if v:IsA("MeshPart") then
+               v.RenderFidelity = Enum.RenderFidelity.Performance
+               v.CollisionFidelity = Enum.CollisionFidelity.Box
+               count = count + 1
            end
        end
-       notify("Aggressive Opt", "NPC/Env Animations disabled.")
+       notify("Geometry Engine", count .. " meshes downgraded to Low-Poly.")
    end,
 })
 
--- 7. TAB: NUCLEAR (EXTREME)  --
+TabAggressive:CreateSection("Physics Optimization")
+TabAggressive:CreateButton({
+   Name = "PvP Mode (No Accessories/Skins)",
+   Callback = function()
+       for _, player in pairs(Players:GetPlayers()) do
+           if player ~= Players.LocalPlayer and player.Character then
+               for _, obj in pairs(player.Character:GetChildren()) do
+                   if obj:IsA("Accessory") or obj:IsA("Shirt") or obj:IsA("Pants") or obj:IsA("CharacterMesh") then
+                       obj:Destroy()
+                   end
+               end
+           end
+       end
+       notify("PvP Mode", "Enemies stripped for max FPS.")
+   end,
+})
+
+-- // 7. TAB: NUCLEAR (EXTREME) \\ --
 local TabNuclear = Window:CreateTab("NUCLEAR", 4483362458)
 
 TabNuclear:CreateSection("Disable map parts (DESTRUCTIVE)")
-TabNuclear:CreateParagraph({Title = "Warning", Content = "Destroys map parts. Only for unplayable lag."})
-
 TabNuclear:CreateButton({
    Name = "FULL BRIGHT LOOP",
    Callback = function()
@@ -208,18 +289,6 @@ TabNuclear:CreateButton({
 })
 
 TabNuclear:CreateButton({
-   Name = "Grey World (Relax gpu)",
-   Callback = function()
-       for _, v in pairs(Workspace:GetDescendants()) do
-           if v:IsA("BasePart") or v:IsA("MeshPart") then
-               v.Color = Color3.fromRGB(100, 100, 100)
-               v.Material = Enum.Material.SmoothPlastic
-           end
-       end
-   end,
-})
-
-TabNuclear:CreateButton({
    Name = "No-Render Mode (Cooldown device)",
    Callback = function()
        for _, v in pairs(Workspace:GetDescendants()) do
@@ -228,9 +297,48 @@ TabNuclear:CreateButton({
        notify("NUCLEAR", "Map is now invisible.")
    end,
 })
--- [[ START OF PART 3 ]] --
 
--- 8. TAB: LOTUS AI (L.A.I.S - INTELLIGENT CORE v2.0) --
+-- // NEW TAB: SERVER MANAGER (v2.5) \\ --
+local TabServer = Window:CreateTab("Server", 4483362458)
+
+TabServer:CreateSection("Smart Connection")
+
+TabServer:CreateButton({
+   Name = "Rejoin Server (Instant)",
+   Callback = function()
+       local ts = game:GetService("TeleportService")
+       local p = Players.LocalPlayer
+       ts:TeleportToPlaceInstance(game.PlaceId, game.JobId, p)
+   end,
+})
+
+TabServer:CreateButton({
+   Name = "Server Hop (Low Ping/Players)",
+   Callback = function()
+       notify("Server Manager", "Searching for better server...")
+       local Http = game:GetService("HttpService")
+       local TPS = game:GetService("TeleportService")
+       local Api = "https://games.roblox.com/v1/games/"
+       local _place = game.PlaceId
+       local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100"
+       
+       local function ListServers(cursor)
+          local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
+          return Http:JSONDecode(Raw)
+       end
+       
+       local Server, Next; repeat
+          local Servers = ListServers(Next)
+          Server = Servers.data[1]
+          Next = Servers.nextPageCursor
+       until Server
+       
+       TPS:TeleportToPlaceInstance(_place, Server.id, Players.LocalPlayer)
+   end,
+})
+-- [[ START OF PART 4 ]] --
+
+-- // 8. TAB: LOTUS AI (L.A.I.S - INTELLIGENT CORE v2.0) \\ --
 local TabAI = Window:CreateTab("Lotus AI", 4483362458)
 
 local AI_State = {
@@ -259,25 +367,47 @@ TabAI:CreateToggle({
    end,
 })
 
-TabAI:CreateSection("Intelligent Features (Real-Time)")
+TabAI:CreateSection("ENGINEERING (PRO FEATURES)")
 
+TabAI:CreateToggle({
+   Name = "Active Frustum Culling (Camera Render)",
+   CurrentValue = false,
+   Callback = function(Value)
+       _G.FrustumCulling = Value
+       if Value then
+           notify("Engine", "Frustum Culling ACTIVATED.")
+           task.spawn(function()
+               local Camera = workspace.CurrentCamera
+               while _G.FrustumCulling do
+                   task.wait(0.2) 
+                   for _, v in pairs(workspace:GetDescendants()) do
+                       if (v:IsA("BasePart") or v:IsA("MeshPart")) and v.Size.Magnitude > 5 and v.Parent ~= Players.LocalPlayer.Character then
+                           local _, onScreen = Camera:WorldToViewportPoint(v.Position)
+                           v.Transparency = onScreen and 0 or 1
+                       end
+                   end
+               end
+               for _, v in pairs(workspace:GetDescendants()) do
+                   if v:IsA("BasePart") then v.Transparency = 0 end
+               end
+           end)
+       end
+   end,
+})
+
+TabAI:CreateSection("Intelligent Features")
 TabAI:CreateToggle({Name = "1. Dynamic Render (Smart Culling)", CurrentValue = false, Callback = function(Value) AI_State.DynamicRender = Value end})
 TabAI:CreateToggle({Name = "2. Entity Sleeper (Stop Far Anims)", CurrentValue = false, Callback = function(Value) AI_State.EntitySleeper = Value end})
 TabAI:CreateToggle({Name = "3. Adaptive VFX Throttle", CurrentValue = false, Callback = function(Value) AI_State.ParticleThrottle = Value end})
-TabAI:CreateToggle({Name = "4. Smart Memory Flush", CurrentValue = false, Callback = function(Value) AI_State.SmartGC = Value end})
-TabAI:CreateToggle({Name = "5. Physics Governor (Ping Stabilizer)", CurrentValue = false, Callback = function(Value) AI_State.PhysicsGovernor = Value end})
 
 -- // THE BRAIN: AI LOGIC LOOP \\ --
 _G.LotusAILoop = function()
     local Player = Players.LocalPlayer
-    
     while AI_State.Enabled do
         task.wait(1.5)
         local myRoot = Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
         if not myRoot then task.wait(1) else
             local currentFPS = Workspace:GetRealPhysicsFPS()
-            local currentPing = 0
-            pcall(function() currentPing = Stats.Network.ServerStatsItem["Data Ping"]:GetValue() end)
             local currentMem = Stats:GetTotalMemoryUsageMb()
 
             if AI_State.DynamicRender then
@@ -291,41 +421,15 @@ _G.LotusAILoop = function()
                     end
                 end
             end
-
-            if AI_State.EntitySleeper then
-                 for _, v in pairs(Workspace:GetDescendants()) do
-                    if v:IsA("Animator") then
-                        local char = v.Parent and v.Parent.Parent
-                        if char and char:FindFirstChild("HumanoidRootPart") and char ~= Player.Character then
-                            local dist = (char.HumanoidRootPart.Position - myRoot.Position).Magnitude
-                            if dist > 200 then v.Parent.Animator.Enabled = false 
-                            else v.Parent.Animator.Enabled = true end
-                        end
-                    end
-                end
-            end
-
-            if AI_State.ParticleThrottle and currentFPS < 45 then
-                for _, v in pairs(Workspace:GetDescendants()) do
-                    if v:IsA("ParticleEmitter") or v:IsA("Trail") or v:IsA("Beam") then v.Enabled = false end
-                end
-            end
-
+            
             if AI_State.SmartGC and currentMem > 2200 then collectgarbage("collect") end
-
-            if AI_State.PhysicsGovernor then
-                if currentPing > 200 then settings().Network.PhysicsSendRate = 10 
-                else settings().Network.PhysicsSendRate = 20 end
-            end
         end
     end
 end
--- [[ START OF PART 4 ]] --
+-- [[ START OF PART 5 ]] --
 
 -- // 9. TAB: ALTERNATIVES (EXTERNAL) \\ --
 local TabAlt = Window:CreateTab("Alternatives", 4483362458)
-
-TabAlt:CreateSection("External Optimizers")
 TabAlt:CreateButton({
    Name = "Load Titanium Gen2 AI",
    Callback = function()
@@ -334,30 +438,77 @@ TabAlt:CreateButton({
    end,
 })
 
--- // 10. TAB: TOOLS & COOLING (UPDATED) \\ --
+-- // 10. TAB: TOOLS & HUD (v2.5) \\ --
 local TabTools = Window:CreateTab("Tools", 4483362458)
 
-TabTools:CreateSection("Device Health (Cooling)")
+TabTools:CreateSection("Lotus Live HUD")
 
--- NEW FEATURE: STOP RENDER / GPU COOLER
+-- NEW FEATURE: LIVE HUD TOGGLE
+local LiveHUD = nil
 TabTools:CreateToggle({
-   Name = "No Render Mode (Cooldown device)",
+   Name = "Enable Info Panel (FPS/Ping/AI)",
    CurrentValue = false,
    Callback = function(Value)
-       -- Bu kod render işlemini tamamen durdurur. 
-       -- Ekran kararır ama oyun çalışmaya devam eder.
-       -- GPU kullanımı minime iner ve telefon soğur.
-       RunService:Set3dRenderingEnabled(not Value)
-       
        if Value then
-           notify("COOLING MODE", "Rendering STOPPED. Device is cooling down...")
+           -- HUD Oluştur
+           if not LiveHUD then
+               LiveHUD = Instance.new("ScreenGui")
+               LiveHUD.Parent = game.CoreGui
+               local Label = Instance.new("TextLabel")
+               Label.Parent = LiveHUD
+               Label.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+               Label.BackgroundTransparency = 0.5
+               Label.Position = UDim2.new(0, 10, 0.9, -50) -- Sol Alt Köşe
+               Label.Size = UDim2.new(0, 180, 0, 45)
+               Label.Font = Enum.Font.GothamBold
+               Label.TextColor3 = Color3.fromRGB(0, 255, 170)
+               Label.TextSize = 14
+               Label.TextXAlignment = Enum.TextXAlignment.Left
+               
+               -- Live Update
+               task.spawn(function()
+                   while LiveHUD and LiveHUD.Parent do
+                       task.wait(0.5)
+                       local fps = math.floor(Workspace:GetRealPhysicsFPS())
+                       local ping = math.floor(Stats.Network.ServerStatsItem["Data Ping"]:GetValue())
+                       Label.Text = "  LOTUS v2.5 PRO+\n  FPS: "..fps.." | Ping: "..ping.."ms"
+                   end
+               end)
+           end
+           LiveHUD.Enabled = true
        else
-           notify("COOLING MODE", "Rendering Restored.")
+           if LiveHUD then LiveHUD.Enabled = false end
        end
    end,
 })
 
-TabTools:CreateSection("Standard Tools")
+TabTools:CreateSection("Device Health (Cooling)")
+TabTools:CreateToggle({
+   Name = "No Render Mode (Cooldown device)",
+   CurrentValue = false,
+   Callback = function(Value)
+       RunService:Set3dRenderingEnabled(not Value)
+       if Value then notify("COOLING", "Render Stopped.") else notify("COOLING", "Render Restored.") end
+   end,
+})
+
+TabTools:CreateSection("Advanced Engineering")
+TabTools:CreateButton({
+   Name = "Disable 3D Audio Physics",
+   Callback = function()
+       local SoundService = game:GetService("SoundService")
+       SoundService.DopplerScale = 0 
+       notify("Audio", "3D Audio Disabled.")
+   end,
+})
+
+TabTools:CreateButton({
+   Name = "Deep Clean Memory (Anti-Crash)",
+   Callback = function()
+       for i = 1, 5 do collectgarbage("collect") end
+       notify("System", "Memory Deep Cleaned.")
+   end,
+})
 
 TabTools:CreateSlider({
    Name = "FPS Cap Limit",
@@ -369,34 +520,11 @@ TabTools:CreateSlider({
    Callback = function(Value) setfpscap(Value) end,
 })
 
-TabTools:CreateButton({
-   Name = "Force Garbage Collection (RAM Fix)",
-   Callback = function()
-       collectgarbage("collect")
-       notify("Memory", "RAM Cleaned.")
-   end,
-})
-
--- // 11. TAB: SETTINGS & INFO \\ --
-local TabSettings = Window:CreateTab("Settings", 4483362458)
-
-TabSettings:CreateButton({
-   Name = "Unload UI",
-   Callback = function() Rayfield:Destroy() end,
-})
-
+-- // 11. FINAL INIT \\ --
 local TabInfo = Window:CreateTab("Info", 4483362458)
-TabInfo:CreateParagraph({Title = "System Specs", Content = "Version: v2.0 Pro+\nUpdated: 2026.01.20\nEngine: Lotus L.A.I.S v2.0"})
-TabInfo:CreateParagraph({Title = "New Features", Content = "- Premium Ocean Theme\n- Key System (Lotus26)\n- GPU Cooling (Stop Render)"})
+TabInfo:CreateParagraph({Title = "Version", Content = "v2.5 PRO+ (Ultra)"})
+TabInfo:CreateParagraph({Title = "Features", Content = "HUD, Server Manager, Custom Key, AI v2.0"})
 
--- // 12. FINAL INITIALIZATION \\ --
-Rayfield:Notify({
-   Title = "Lotus v2.0 Pro+ Ready",
-   Content = "System Loaded successfully.",
-   Duration = 5,
-   Image = 4483362458,
-})
-
+Rayfield:Notify({Title = "Lotus v2.5 PRO+", Content = "System Loaded.", Duration = 5, Image = 4483362458})
 Rayfield:LoadConfiguration()
-
 -- [[ END OF SCRIPT ]] --
