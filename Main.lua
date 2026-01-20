@@ -1,13 +1,15 @@
 --[[ 
     LOTUS •|• OPTIMIZATION HUB v2.0 Pro+
-    [PART 1: Premium UI, Key System, Core Setup]
-    
+   
+[PART 1: Premium UI, Key System, Core Setup]
+
+Added:
     Theme: Ocean (Water Green)
     Key: Lotus26
     Special Feature: GPU Cooling (Stop Render)
 --]]
 
--- // 1. SERVICE DECLARATION \\ --
+-- 1. SERVICE DECLARATION --
 local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -17,14 +19,14 @@ local Terrain = Workspace.Terrain
 local UserInputService = game:GetService("UserInputService")
 local Stats = game:GetService("Stats")
 
--- // 2. RAYFIELD LIBRARY SETUP (PREMIUM THEME) \\ --
+-- -- 2. RAYFIELD LIBRARY SETUP --
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
    Name = "Lotus •|• Optimization HUB v2.0 Pro+",
    LoadingTitle = "L.A.I.S Loading...",
    LoadingSubtitle = "Finding Latest Version...",
-   Theme = "Ocean", -- Su Yeşili / Okyanus Teması
+   Theme = "Ocean", 
    
    ConfigurationSaving = {
       Enabled = true,
@@ -47,11 +49,11 @@ local Window = Rayfield:CreateWindow({
       FileName = "LotusKeyV2",
       SaveKey = true,
       GrabKeyFromSite = false, 
-      Key = "Lotus26" -- Şifre Buradadır
+      Key = "Lotus26"
    }
 })
 
--- // 3. CORE FUNCTIONS \\ --
+-- 3. CORE FUNCTIONS --
 
 local function notify(title, content)
     Rayfield:Notify({Title = title, Content = content, Duration = 3, Image = 4483362458})
@@ -68,7 +70,7 @@ local function safeHideVisuals(instance)
     end
 end
 
--- // 4. TAB: LIGHT OPTIMIZATION \\ --
+--  4. TAB: LIGHT OPTIMIZATION --
 local TabLight = Window:CreateTab("Light Opt.", 4483362458)
 
 TabLight:CreateSection("Visual Clarity")
@@ -104,7 +106,7 @@ TabLight:CreateButton({
    end,
 })
 
--- // 5. TAB: BALANCED OPTIMIZATION \\ --
+-- 5. TAB: BALANCED OPTIMIZATION --
 local TabBalanced = Window:CreateTab("Balanced Opt.", 4483362458)
 
 TabBalanced:CreateSection("Shadows & Materials")
@@ -138,7 +140,7 @@ TabBalanced:CreateButton({
 })
 -- [[ START OF PART 2 ]] --
 
--- // 6. TAB: AGGRESSIVE OPTIMIZATION \\ --
+--  6. TAB: AGGRESSIVE OPTIMIZATION  --
 local TabAggressive = Window:CreateTab("Aggressive", 4483362458)
 
 TabAggressive:CreateSection("Smart Cleanup (Non-Destructive)")
@@ -185,7 +187,7 @@ TabAggressive:CreateButton({
    end,
 })
 
--- // 7. TAB: NUCLEAR (EXTREME) \\ --
+-- 7. TAB: NUCLEAR (EXTREME)  --
 local TabNuclear = Window:CreateTab("NUCLEAR", 4483362458)
 
 TabNuclear:CreateSection("Disable map parts (DESTRUCTIVE)")
@@ -228,7 +230,7 @@ TabNuclear:CreateButton({
 })
 -- [[ START OF PART 3 ]] --
 
--- // 8. TAB: LOTUS AI (L.A.I.S - INTELLIGENT CORE v2.0) \\ --
+-- 8. TAB: LOTUS AI (L.A.I.S - INTELLIGENT CORE v2.0) --
 local TabAI = Window:CreateTab("Lotus AI", 4483362458)
 
 local AI_State = {
