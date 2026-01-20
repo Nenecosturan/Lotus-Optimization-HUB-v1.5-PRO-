@@ -1,10 +1,6 @@
 --[[ 
-    LOTUS •|• OPTIMIZATION HUB
+    LOTUS •|• OPTIMIZATION HUB v1.5 PRO (AI ENHANCED)
     [PART 1: Core Setup, Safe Functions, Light & Balanced Tabs]
-    
-    Version: 1.5 (Pro)
-    Language: Lua / Rayfield UI
-    Target: Universal FPS Boosting & AI Management
 --]]
 
 -- // 1. SERVICE DECLARATION \\ --
@@ -21,13 +17,13 @@ local Stats = game:GetService("Stats")
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "Lotus •|• Optimization HUB v1.5",
+   Name = "Lotus •|• Optimization HUB v1.5 (AI+)",
    LoadingTitle = "Lotus Engine v1.5 Starting...",
    LoadingSubtitle = "Powered by Gemini AI",
    ConfigurationSaving = {
       Enabled = true,
       FolderName = "LotusHubGen2", 
-      FileName = "LotusConfigV1.5"
+      FileName = "LotusConfigV1.5AI"
    },
    Discord = {
       Enabled = false,
@@ -37,18 +33,12 @@ local Window = Rayfield:CreateWindow({
    KeySystem = false, 
 })
 
--- // 3. CORE FUNCTIONS (IMPROVED & SAFER) \\ --
+-- // 3. CORE FUNCTIONS \\ --
 
 local function notify(title, content)
-    Rayfield:Notify({
-        Title = title,
-        Content = content,
-        Duration = 3,
-        Image = 4483362458,
-    })
+    Rayfield:Notify({Title = title, Content = content, Duration = 3, Image = 4483362458})
 end
 
--- NEW: Safe Visual Hider (Does not destroy, prevents game breaking)
 local function safeHideVisuals(instance)
     if instance:IsA("Texture") or instance:IsA("Decal") then
         instance.Transparency = 1
@@ -64,14 +54,11 @@ end
 local TabLight = Window:CreateTab("Light Opt.", 4483362458)
 
 TabLight:CreateSection("Visual Clarity")
-
 TabLight:CreateButton({
    Name = "Remove Effects (Blur/Bloom/Sun)",
    Callback = function()
         for _, v in pairs(Lighting:GetChildren()) do
-            if v:IsA("PostEffect") then -- Blur, Bloom, etc. catches all
-                v.Enabled = false
-            end
+            if v:IsA("PostEffect") then v.Enabled = false end
         end
        notify("Light Opt", "Visual effects disabled.")
    end,
@@ -81,9 +68,7 @@ TabLight:CreateButton({
    Name = "Clear Atmosphere & Fog",
    Callback = function()
        for _, v in pairs(Lighting:GetChildren()) do
-           if v:IsA("Atmosphere") or v:IsA("Sky") then
-               v:Destroy()
-           end
+           if v:IsA("Atmosphere") or v:IsA("Sky") then v:Destroy() end
        end
        Lighting.FogEnd = 9e9
        notify("Light Opt", "Atmosphere cleared.")
@@ -91,7 +76,6 @@ TabLight:CreateButton({
 })
 
 TabLight:CreateSection("Rendering")
-
 TabLight:CreateButton({
    Name = "Low Quality Water",
    Callback = function()
@@ -106,7 +90,6 @@ TabLight:CreateButton({
 local TabBalanced = Window:CreateTab("Balanced Opt.", 4483362458)
 
 TabBalanced:CreateSection("Shadows & Materials")
-
 TabBalanced:CreateButton({
    Name = "Disable Global Shadows",
    Callback = function()
@@ -132,23 +115,22 @@ TabBalanced:CreateButton({
    Name = "Hide All Particles (Safe Mode)",
    Callback = function()
        safeHideVisuals(Workspace)
-       notify("Balanced Opt", "Particles hidden (Enabled=false).")
+       notify("Balanced Opt", "Particles hidden.")
    end,
 })
 -- [[ START OF PART 2 ]] --
 
--- // 6. TAB: AGGRESSIVE OPTIMIZATION (REVISED) \\ --
+-- // 6. TAB: AGGRESSIVE OPTIMIZATION \\ --
 local TabAggressive = Window:CreateTab("Aggressive", 4483362458)
 
 TabAggressive:CreateSection("Smart Cleanup (Non-Destructive)")
-
 TabAggressive:CreateButton({
    Name = "Hide Textures & Decals (No Crash)",
    Callback = function()
        local count = 0
        for _, v in pairs(Workspace:GetDescendants()) do
            if v:IsA("Texture") or v:IsA("Decal") then
-               v.Transparency = 1 -- Changed from Destroy to Transparency
+               v.Transparency = 1 
                count = count + 1
            end
        end
@@ -170,7 +152,6 @@ TabAggressive:CreateButton({
 })
 
 TabAggressive:CreateSection("Physics Optimization")
-
 TabAggressive:CreateButton({
    Name = "Disable Environmental Animators",
    Callback = function()
@@ -178,7 +159,7 @@ TabAggressive:CreateButton({
            if v:IsA("Animator") then
                local char = v.Parent and v.Parent.Parent
                if char and char.Name ~= Players.LocalPlayer.Name then
-                   v:Destroy() -- Animators are safe to destroy usually
+                   v:Destroy() 
                end
            end
        end
@@ -227,68 +208,150 @@ TabNuclear:CreateButton({
        notify("NUCLEAR", "Map is now invisible.")
    end,
 })
+-- [[ START OF PART 3 ]] --
 
--- // 8. TAB: LOTUS AI (L.A.I.S) \\ --
+-- // 8. TAB: LOTUS AI (L.A.I.S - INTELLIGENT CORE v2.0) \\ --
 local TabAI = Window:CreateTab("Lotus AI", 4483362458)
-local AI_Enabled = false
-local AI_Config = { TargetFPS = 50, MaxRAM = 2000, AFK_Mode = true, Combat_Mode = true }
+
+-- AI STATE MANAGEMENT
+local AI_State = {
+    Enabled = false,
+    DynamicRender = false,   
+    EntitySleeper = false,   
+    ParticleThrottle = false,
+    SmartGC = false,         
+    PhysicsGovernor = false  
+}
+
+TabAI:CreateSection("L.A.I.S Main Switch")
 
 TabAI:CreateToggle({
-   Name = "Enable Lotus AI Engine",
+   Name = "ACTIVATE AI ENGINE (Master Switch)",
    CurrentValue = false,
    Flag = "AI_Master", 
    Callback = function(Value)
-       AI_Enabled = Value
+       AI_State.Enabled = Value
        if Value then
-           notify("L.A.I.S", "AI Online. Monitoring Performance.")
+           notify("L.A.I.S", "Engine Online. Analysis Started.")
            task.spawn(function() _G.LotusAILoop() end)
+       else
+           notify("L.A.I.S", "Engine Offline.")
        end
    end,
 })
 
--- AI Logic Definition
+TabAI:CreateSection("Intelligent Features (Real-Time)")
+
+TabAI:CreateToggle({
+   Name = "1. Dynamic Render (Smart Culling)",
+   CurrentValue = false,
+   Callback = function(Value) AI_State.DynamicRender = Value end,
+})
+-- Hides objects > 300 studs away
+
+TabAI:CreateToggle({
+   Name = "2. Entity Sleeper (Stop Far Anims)",
+   CurrentValue = false,
+   Callback = function(Value) AI_State.EntitySleeper = Value end,
+})
+-- Freezes animations of far players/NPCs
+
+TabAI:CreateToggle({
+   Name = "3. Adaptive VFX Throttle",
+   CurrentValue = false,
+   Callback = function(Value) AI_State.ParticleThrottle = Value end,
+})
+-- Disables particles if FPS drops below 45
+
+TabAI:CreateToggle({
+   Name = "4. Smart Memory Flush",
+   CurrentValue = false,
+   Callback = function(Value) AI_State.SmartGC = Value end,
+})
+-- Cleans RAM only when critical (>2200MB)
+
+TabAI:CreateToggle({
+   Name = "5. Physics Governor (Ping Stabilizer)",
+   CurrentValue = false,
+   Callback = function(Value) AI_State.PhysicsGovernor = Value end,
+})
+-- Slows physics packets if Ping > 200ms
+
+-- // THE BRAIN: AI LOGIC LOOP \\ --
 _G.LotusAILoop = function()
     local Player = Players.LocalPlayer
-    local LastInput = tick()
-    UserInputService.InputBegan:Connect(function() LastInput = tick() end)
-
-    while AI_Enabled do
-        task.wait(1)
+    
+    while AI_State.Enabled do
+        task.wait(1.5) -- Optimized checking rate
         
-        -- Feature: RAM Cleaner
-        if Stats:GetTotalMemoryUsageMb() > AI_Config.MaxRAM then
-            collectgarbage("collect")
-        end
+        -- Safe Check: Character Existence
+        local myRoot = Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
+        if not myRoot then 
+            task.wait(1) 
+        else
+            -- Data Collection
+            local currentFPS = Workspace:GetRealPhysicsFPS()
+            local currentPing = 0
+            pcall(function() currentPing = Stats.Network.ServerStatsItem["Data Ping"]:GetValue() end)
+            local currentMem = Stats:GetTotalMemoryUsageMb()
 
-        -- Feature: Combat Adrenaline
-        if AI_Config.Combat_Mode and Player.Character then
-            local hum = Player.Character:FindFirstChild("Humanoid")
-            if hum and hum.Health < hum.MaxHealth then
-                Lighting.GlobalShadows = false
+            -- [LOGIC 1] Dynamic Render Implementation
+            if AI_State.DynamicRender then
+                for _, v in pairs(Workspace:GetDescendants()) do
+                    if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") and v ~= Player.Character then
+                        local targetRoot = v.HumanoidRootPart
+                        local dist = (targetRoot.Position - myRoot.Position).Magnitude
+                        local shouldHide = (dist > 300)
+                        
+                        for _, part in pairs(v:GetChildren()) do
+                            if part:IsA("BasePart") then part.Transparency = shouldHide and 1 or 0 end
+                        end
+                    end
+                end
             end
-        end
 
-        -- Feature: Smart AFK
-        if AI_Config.AFK_Mode then
-            if (tick() - LastInput) > 30 then
-                setfpscap(10)
-                RunService:Set3dRenderingEnabled(false)
-            else
-                setfpscap(60)
-                RunService:Set3dRenderingEnabled(true)
+            -- [LOGIC 2] Entity Sleeper Implementation
+            if AI_State.EntitySleeper then
+                 for _, v in pairs(Workspace:GetDescendants()) do
+                    if v:IsA("Animator") then
+                        local char = v.Parent and v.Parent.Parent
+                        if char and char:FindFirstChild("HumanoidRootPart") and char ~= Player.Character then
+                            local dist = (char.HumanoidRootPart.Position - myRoot.Position).Magnitude
+                            if dist > 200 then v.Parent.Animator.Enabled = false 
+                            else v.Parent.Animator.Enabled = true end
+                        end
+                    end
+                end
+            end
+
+            -- [LOGIC 3] Adaptive VFX Throttle
+            if AI_State.ParticleThrottle then
+                if currentFPS < 45 then
+                    for _, v in pairs(Workspace:GetDescendants()) do
+                        if v:IsA("ParticleEmitter") or v:IsA("Trail") or v:IsA("Beam") then v.Enabled = false end
+                    end
+                end
+            end
+
+            -- [LOGIC 4] Smart Memory Flush
+            if AI_State.SmartGC and currentMem > 2200 then
+                collectgarbage("collect")
+            end
+
+            -- [LOGIC 5] Physics Governor
+            if AI_State.PhysicsGovernor then
+                if currentPing > 200 then settings().Network.PhysicsSendRate = 10 
+                else settings().Network.PhysicsSendRate = 20 end
             end
         end
     end
 end
--- [[ START OF PART 3 ]] --
+-- [[ START OF PART 4 ]] --
 
--- // 9. TAB: ALTERNATIVES (NEW v1.5) \\ --
--- This tab contains other powerful scripts requested by the user.
-
+-- // 9. TAB: ALTERNATIVES (EXTERNAL) \\ --
 local TabAlt = Window:CreateTab("Alternatives", 4483362458)
 
 TabAlt:CreateSection("External Optimizers")
-
 TabAlt:CreateParagraph({
     Title = "Titanium Optimizer Gen2",
     Content = "A powerful alternative AI-based optimizer. Click below to load."
@@ -298,7 +361,6 @@ TabAlt:CreateButton({
    Name = "Load Titanium Gen2 AI",
    Callback = function()
        notify("Loader", "Injecting Titanium Optimizer...")
-       -- The requested external script
        loadstring(game:HttpGet("https://raw.githubusercontent.com/Nenecosturan/Titanium-Optimizer-Gen2-AI/refs/heads/main/Main.lua"))()
    end,
 })
@@ -313,9 +375,7 @@ TabTools:CreateSlider({
    Suffix = "FPS",
    CurrentValue = 60,
    Flag = "FPSCap", 
-   Callback = function(Value)
-       setfpscap(Value)
-   end,
+   Callback = function(Value) setfpscap(Value) end,
 })
 
 TabTools:CreateButton({
@@ -335,20 +395,13 @@ TabSettings:CreateButton({
 })
 
 local TabInfo = Window:CreateTab("Info", 4483362458)
-TabInfo:CreateParagraph({
-    Title = "System Specs",
-    Content = "Version: 1.5 (Pro)\nUpdated: 2026.01.20\nEngine: Lotus L.A.I.S"
-})
-TabInfo:CreateParagraph({
-    Title = "Changelog v1.5",
-    Content = "- Added Alternatives Tab\n- Titanium Gen2 Integrated\n- Fixed Crash Issues in Aggressive Mode"
-})
+TabInfo:CreateParagraph({Title = "System Specs", Content = "Version: 1.5 (AI+)\nUpdated: 2026.01.20\nEngine: Lotus L.A.I.S v2.0"})
+TabInfo:CreateParagraph({Title = "Changelog v1.5", Content = "- ADDED: L.A.I.S v2.0 AI Core\n- ADDED: 5 Smart AI Features\n- ADDED: Titanium Integration"})
 
 -- // 12. FINAL INITIALIZATION \\ --
-
 Rayfield:Notify({
    Title = "Lotus v1.5 Ready",
-   Content = "Optimization HUB & Alternatives Loaded.",
+   Content = "Optimization HUB & AI Engine Loaded.",
    Duration = 5,
    Image = 4483362458,
 })
