@@ -1,6 +1,10 @@
 --[[ 
-    LOTUS •|• OPTIMIZATION HUB v1.5 PRO (AI ENHANCED)
-    [PART 1: Core Setup, Safe Functions, Light & Balanced Tabs]
+    LOTUS •|• OPTIMIZATION HUB v2.0 Pro+
+    [PART 1: Premium UI, Key System, Core Setup]
+    
+    Theme: Ocean (Water Green)
+    Key: Lotus26
+    Special Feature: GPU Cooling (Stop Render)
 --]]
 
 -- // 1. SERVICE DECLARATION \\ --
@@ -13,24 +17,38 @@ local Terrain = Workspace.Terrain
 local UserInputService = game:GetService("UserInputService")
 local Stats = game:GetService("Stats")
 
--- // 2. RAYFIELD LIBRARY SETUP \\ --
+-- // 2. RAYFIELD LIBRARY SETUP (PREMIUM THEME) \\ --
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "Lotus •|• Optimization HUB v1.5 (AI+)",
-   LoadingTitle = "Lotus Engine v1.5 Starting...",
-   LoadingSubtitle = "Powered by Gemini AI",
+   Name = "Lotus •|• Optimization HUB v2.0 Pro+",
+   LoadingTitle = "L.A.I.S Loading...",
+   LoadingSubtitle = "Finding Latest Version...",
+   Theme = "Ocean", -- Su Yeşili / Okyanus Teması
+   
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = "LotusHubGen2", 
-      FileName = "LotusConfigV1.5AI"
+      FolderName = "LotusHubV2", 
+      FileName = "LotusConfigProPlus"
    },
+   
    Discord = {
       Enabled = false,
       Invite = "", 
       RememberJoins = true 
    },
-   KeySystem = false, 
+   
+   -- KEY SYSTEM INTEGRATION --
+   KeySystem = true, 
+   KeySettings = {
+      Title = "Lotus Access Manager",
+      Subtitle = "Enter License Key",
+      Note = "Key: Lotus26",
+      FileName = "LotusKeyV2",
+      SaveKey = true,
+      GrabKeyFromSite = false, 
+      Key = "Lotus26" -- Şifre Buradadır
+   }
 })
 
 -- // 3. CORE FUNCTIONS \\ --
@@ -170,7 +188,7 @@ TabAggressive:CreateButton({
 -- // 7. TAB: NUCLEAR (EXTREME) \\ --
 local TabNuclear = Window:CreateTab("NUCLEAR", 4483362458)
 
-TabNuclear:CreateSection("THE MELTDOWN (DESTRUCTIVE)")
+TabNuclear:CreateSection("Disable map parts (DESTRUCTIVE)")
 TabNuclear:CreateParagraph({Title = "Warning", Content = "Destroys map parts. Only for unplayable lag."})
 
 TabNuclear:CreateButton({
@@ -188,7 +206,7 @@ TabNuclear:CreateButton({
 })
 
 TabNuclear:CreateButton({
-   Name = "Grey World (0 Color)",
+   Name = "Grey World (Relax gpu)",
    Callback = function()
        for _, v in pairs(Workspace:GetDescendants()) do
            if v:IsA("BasePart") or v:IsA("MeshPart") then
@@ -200,7 +218,7 @@ TabNuclear:CreateButton({
 })
 
 TabNuclear:CreateButton({
-   Name = "No-Render Mode (Invisible Map)",
+   Name = "No-Render Mode (Cooldown device)",
    Callback = function()
        for _, v in pairs(Workspace:GetDescendants()) do
            if v:IsA("BasePart") then v.Transparency = 1 end
@@ -213,7 +231,6 @@ TabNuclear:CreateButton({
 -- // 8. TAB: LOTUS AI (L.A.I.S - INTELLIGENT CORE v2.0) \\ --
 local TabAI = Window:CreateTab("Lotus AI", 4483362458)
 
--- AI STATE MANAGEMENT
 local AI_State = {
     Enabled = false,
     DynamicRender = false,   
@@ -242,67 +259,30 @@ TabAI:CreateToggle({
 
 TabAI:CreateSection("Intelligent Features (Real-Time)")
 
-TabAI:CreateToggle({
-   Name = "1. Dynamic Render (Smart Culling)",
-   CurrentValue = false,
-   Callback = function(Value) AI_State.DynamicRender = Value end,
-})
--- Hides objects > 300 studs away
-
-TabAI:CreateToggle({
-   Name = "2. Entity Sleeper (Stop Far Anims)",
-   CurrentValue = false,
-   Callback = function(Value) AI_State.EntitySleeper = Value end,
-})
--- Freezes animations of far players/NPCs
-
-TabAI:CreateToggle({
-   Name = "3. Adaptive VFX Throttle",
-   CurrentValue = false,
-   Callback = function(Value) AI_State.ParticleThrottle = Value end,
-})
--- Disables particles if FPS drops below 45
-
-TabAI:CreateToggle({
-   Name = "4. Smart Memory Flush",
-   CurrentValue = false,
-   Callback = function(Value) AI_State.SmartGC = Value end,
-})
--- Cleans RAM only when critical (>2200MB)
-
-TabAI:CreateToggle({
-   Name = "5. Physics Governor (Ping Stabilizer)",
-   CurrentValue = false,
-   Callback = function(Value) AI_State.PhysicsGovernor = Value end,
-})
--- Slows physics packets if Ping > 200ms
+TabAI:CreateToggle({Name = "1. Dynamic Render (Smart Culling)", CurrentValue = false, Callback = function(Value) AI_State.DynamicRender = Value end})
+TabAI:CreateToggle({Name = "2. Entity Sleeper (Stop Far Anims)", CurrentValue = false, Callback = function(Value) AI_State.EntitySleeper = Value end})
+TabAI:CreateToggle({Name = "3. Adaptive VFX Throttle", CurrentValue = false, Callback = function(Value) AI_State.ParticleThrottle = Value end})
+TabAI:CreateToggle({Name = "4. Smart Memory Flush", CurrentValue = false, Callback = function(Value) AI_State.SmartGC = Value end})
+TabAI:CreateToggle({Name = "5. Physics Governor (Ping Stabilizer)", CurrentValue = false, Callback = function(Value) AI_State.PhysicsGovernor = Value end})
 
 -- // THE BRAIN: AI LOGIC LOOP \\ --
 _G.LotusAILoop = function()
     local Player = Players.LocalPlayer
     
     while AI_State.Enabled do
-        task.wait(1.5) -- Optimized checking rate
-        
-        -- Safe Check: Character Existence
+        task.wait(1.5)
         local myRoot = Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
-        if not myRoot then 
-            task.wait(1) 
-        else
-            -- Data Collection
+        if not myRoot then task.wait(1) else
             local currentFPS = Workspace:GetRealPhysicsFPS()
             local currentPing = 0
             pcall(function() currentPing = Stats.Network.ServerStatsItem["Data Ping"]:GetValue() end)
             local currentMem = Stats:GetTotalMemoryUsageMb()
 
-            -- [LOGIC 1] Dynamic Render Implementation
             if AI_State.DynamicRender then
                 for _, v in pairs(Workspace:GetDescendants()) do
                     if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") and v ~= Player.Character then
-                        local targetRoot = v.HumanoidRootPart
-                        local dist = (targetRoot.Position - myRoot.Position).Magnitude
+                        local dist = (v.HumanoidRootPart.Position - myRoot.Position).Magnitude
                         local shouldHide = (dist > 300)
-                        
                         for _, part in pairs(v:GetChildren()) do
                             if part:IsA("BasePart") then part.Transparency = shouldHide and 1 or 0 end
                         end
@@ -310,7 +290,6 @@ _G.LotusAILoop = function()
                 end
             end
 
-            -- [LOGIC 2] Entity Sleeper Implementation
             if AI_State.EntitySleeper then
                  for _, v in pairs(Workspace:GetDescendants()) do
                     if v:IsA("Animator") then
@@ -324,21 +303,14 @@ _G.LotusAILoop = function()
                 end
             end
 
-            -- [LOGIC 3] Adaptive VFX Throttle
-            if AI_State.ParticleThrottle then
-                if currentFPS < 45 then
-                    for _, v in pairs(Workspace:GetDescendants()) do
-                        if v:IsA("ParticleEmitter") or v:IsA("Trail") or v:IsA("Beam") then v.Enabled = false end
-                    end
+            if AI_State.ParticleThrottle and currentFPS < 45 then
+                for _, v in pairs(Workspace:GetDescendants()) do
+                    if v:IsA("ParticleEmitter") or v:IsA("Trail") or v:IsA("Beam") then v.Enabled = false end
                 end
             end
 
-            -- [LOGIC 4] Smart Memory Flush
-            if AI_State.SmartGC and currentMem > 2200 then
-                collectgarbage("collect")
-            end
+            if AI_State.SmartGC and currentMem > 2200 then collectgarbage("collect") end
 
-            -- [LOGIC 5] Physics Governor
             if AI_State.PhysicsGovernor then
                 if currentPing > 200 then settings().Network.PhysicsSendRate = 10 
                 else settings().Network.PhysicsSendRate = 20 end
@@ -352,11 +324,6 @@ end
 local TabAlt = Window:CreateTab("Alternatives", 4483362458)
 
 TabAlt:CreateSection("External Optimizers")
-TabAlt:CreateParagraph({
-    Title = "Titanium Optimizer Gen2",
-    Content = "A powerful alternative AI-based optimizer. Click below to load."
-})
-
 TabAlt:CreateButton({
    Name = "Load Titanium Gen2 AI",
    Callback = function()
@@ -365,12 +332,34 @@ TabAlt:CreateButton({
    end,
 })
 
--- // 10. TAB: TOOLS \\ --
+-- // 10. TAB: TOOLS & COOLING (UPDATED) \\ --
 local TabTools = Window:CreateTab("Tools", 4483362458)
+
+TabTools:CreateSection("Device Health (Cooling)")
+
+-- NEW FEATURE: STOP RENDER / GPU COOLER
+TabTools:CreateToggle({
+   Name = "No Render Mode (Cooldown device)",
+   CurrentValue = false,
+   Callback = function(Value)
+       -- Bu kod render işlemini tamamen durdurur. 
+       -- Ekran kararır ama oyun çalışmaya devam eder.
+       -- GPU kullanımı minime iner ve telefon soğur.
+       RunService:Set3dRenderingEnabled(not Value)
+       
+       if Value then
+           notify("COOLING MODE", "Rendering STOPPED. Device is cooling down...")
+       else
+           notify("COOLING MODE", "Rendering Restored.")
+       end
+   end,
+})
+
+TabTools:CreateSection("Standard Tools")
 
 TabTools:CreateSlider({
    Name = "FPS Cap Limit",
-   Range = {30, 360},
+   Range = {30, 720},
    Increment = 1,
    Suffix = "FPS",
    CurrentValue = 60,
@@ -395,13 +384,13 @@ TabSettings:CreateButton({
 })
 
 local TabInfo = Window:CreateTab("Info", 4483362458)
-TabInfo:CreateParagraph({Title = "System Specs", Content = "Version: 1.5 (AI+)\nUpdated: 2026.01.20\nEngine: Lotus L.A.I.S v2.0"})
-TabInfo:CreateParagraph({Title = "Changelog v1.5", Content = "- ADDED: L.A.I.S v2.0 AI Core\n- ADDED: 5 Smart AI Features\n- ADDED: Titanium Integration"})
+TabInfo:CreateParagraph({Title = "System Specs", Content = "Version: v2.0 Pro+\nUpdated: 2026.01.20\nEngine: Lotus L.A.I.S v2.0"})
+TabInfo:CreateParagraph({Title = "New Features", Content = "- Premium Ocean Theme\n- Key System (Lotus26)\n- GPU Cooling (Stop Render)"})
 
 -- // 12. FINAL INITIALIZATION \\ --
 Rayfield:Notify({
-   Title = "Lotus v1.5 Ready",
-   Content = "Optimization HUB & AI Engine Loaded.",
+   Title = "Lotus v2.0 Pro+ Ready",
+   Content = "System Loaded successfully.",
    Duration = 5,
    Image = 4483362458,
 })
