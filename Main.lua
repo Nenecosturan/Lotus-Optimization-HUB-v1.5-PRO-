@@ -1,236 +1,21 @@
 --[[ 
     LOTUS •|• OPTIMIZATION HUB v2.5 PRO+
    
-    [PART 1: PRO Key GUI, Advanced Animation, Core Setup]
+    [PART 1: Rayfield Key System, Core Setup]
 
-    Added:
-    - NEW: Professional Key UI (Zoom & Glow Animation)
-    - Theme: Ocean (Water Green)
-    - Key: Lotus26 (3 Strikes -> Kick)
-    - Smart Server Manager Tab
-    - Lotus Live HUD (Toggleable)
+    Status: Reverted to Original Stable Key System
+    Key: Lotus26
+    
+    Features:
+    - Smart Server Manager
+    - Lotus Live HUD
+    - L.A.I.S v2.0 AI Engine
     - GPU Cooling (Stop Render)
     - Active Frustum Culling
 --]]
 
--- // 0. SECURITY & AUTHENTICATION SYSTEM (PRO GUI) \\ --
+-- // 1. SERVICE DECLARATION \\ --
 local Players = game:GetService("Players")
-local CoreGui = game:GetService("CoreGui")
-local TweenService = game:GetService("TweenService")
-local LocalPlayer = Players.LocalPlayer
-
--- Global değişken ile diğer parçaları bekletiyoruz
-getgenv().LotusAuthPassed = false
-
--- GUI OLUŞTURMA
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "LotusProLoginUI"
-ScreenGui.Parent = CoreGui
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-ScreenGui.IgnoreGuiInset = true -- Tam ekran
-
--- ARKA PLAN KARARTMA
-local BackgroundOverlay = Instance.new("Frame")
-BackgroundOverlay.Name = "Overlay"
-BackgroundOverlay.Parent = ScreenGui
-BackgroundOverlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-BackgroundOverlay.BackgroundTransparency = 1 
-BackgroundOverlay.Size = UDim2.new(1, 0, 1, 0)
-BackgroundOverlay.ZIndex = 0
-
--- ANA PENCERE (Main Frame)
-local MainFrame = Instance.new("Frame")
-MainFrame.Name = "MainFrame"
-MainFrame.Parent = ScreenGui
-MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-MainFrame.BackgroundColor3 = Color3.fromRGB(25, 35, 30) 
-MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-MainFrame.Size = UDim2.new(0, 600, 0, 350) 
-MainFrame.BorderSizePixel = 0
-MainFrame.ClipsDescendants = true
-
--- Animasyon Başlangıç Değerleri
-MainFrame.UIScale = Instance.new("UIScale", MainFrame)
-MainFrame.UIScale.Scale = 0.5 
-MainFrame.BackgroundTransparency = 1 
-
--- Köşeler ve Çerçeve
-local UICorner = Instance.new("UICorner", MainFrame)
-UICorner.CornerRadius = UDim.new(0, 20)
-local UIStroke = Instance.new("UIStroke", MainFrame)
-UIStroke.Color = Color3.fromRGB(80, 255, 180) -- Lotus Green Glow
-UIStroke.Thickness = 3
-UIStroke.Transparency = 1 
-
--- SOL PANEL (Giriş Kısmı)
-local LeftPanel = Instance.new("Frame")
-LeftPanel.Parent = MainFrame
-LeftPanel.BackgroundColor3 = Color3.fromRGB(30, 45, 40)
-LeftPanel.Position = UDim2.new(0.03, 0, 0.05, 0)
-LeftPanel.Size = UDim2.new(0.45, 0, 0.9, 0)
-LeftPanel.BorderSizePixel = 0
-Instance.new("UICorner", LeftPanel).CornerRadius = UDim.new(0, 15)
-local LeftStroke = UIStroke:Clone()
-LeftStroke.Parent = LeftPanel
-LeftStroke.Thickness = 2
-
--- Başlıklar
-local TitleLabel = Instance.new("TextLabel")
-TitleLabel.Parent = LeftPanel
-TitleLabel.BackgroundTransparency = 1
-TitleLabel.Position = UDim2.new(0, 0, 0.05, 0)
-TitleLabel.Size = UDim2.new(1, 0, 0, 30)
-TitleLabel.Font = Enum.Font.GothamBold
-TitleLabel.Text = "LOTUS KEY SYSTEM"
-TitleLabel.TextColor3 = Color3.fromRGB(100, 255, 200)
-TitleLabel.TextSize = 18
-TitleLabel.TextTransparency = 1
-
-local KeyHintLabel = Instance.new("TextLabel")
-KeyHintLabel.Parent = LeftPanel
-KeyHintLabel.BackgroundTransparency = 1
-KeyHintLabel.Position = UDim2.new(0, 0, 0.25, 0)
-KeyHintLabel.Size = UDim2.new(1, 0, 0, 20)
-KeyHintLabel.Font = Enum.Font.Gotham
-KeyHintLabel.Text = "Key:Lotus26"
-KeyHintLabel.TextColor3 = Color3.fromRGB(150, 200, 180)
-KeyHintLabel.TextSize = 14
-KeyHintLabel.TextTransparency = 1
-
--- KEY GİRİŞ KUTUSU (Üstte)
-local KeyInputBox = Instance.new("TextBox")
-KeyInputBox.Parent = LeftPanel
-KeyInputBox.BackgroundColor3 = Color3.fromRGB(20, 30, 25)
-KeyInputBox.Position = UDim2.new(0.1, 0, 0.4, 0)
-KeyInputBox.Size = UDim2.new(0.8, 0, 0.3, 0) 
-KeyInputBox.Font = Enum.Font.Gotham
-KeyInputBox.PlaceholderText = "Enter Key..."
-KeyInputBox.PlaceholderColor3 = Color3.fromRGB(80, 120, 100)
-KeyInputBox.Text = ""
-KeyInputBox.TextColor3 = Color3.fromRGB(100, 255, 200)
-KeyInputBox.TextSize = 16
-KeyInputBox.BackgroundTransparency = 1
-KeyInputBox.TextTransparency = 1
-Instance.new("UICorner", KeyInputBox).CornerRadius = UDim.new(0, 15)
-local BoxStroke = UIStroke:Clone()
-BoxStroke.Parent = KeyInputBox
-BoxStroke.Thickness = 1.5
-
--- KONTROL BUTONU (Altta)
-local CheckBtn = Instance.new("TextButton")
-CheckBtn.Parent = LeftPanel
-CheckBtn.BackgroundColor3 = Color3.fromRGB(40, 60, 55)
-CheckBtn.Position = UDim2.new(0.1, 0, 0.75, 0)
-CheckBtn.Size = UDim2.new(0.8, 0, 0, 50)
-CheckBtn.Font = Enum.Font.GothamBold
-CheckBtn.Text = "Check key"
-CheckBtn.TextColor3 = Color3.fromRGB(100, 255, 200)
-CheckBtn.TextSize = 18
-CheckBtn.AutoButtonColor = false
-CheckBtn.BackgroundTransparency = 1
-CheckBtn.TextTransparency = 1
-Instance.new("UICorner", CheckBtn).CornerRadius = UDim.new(0, 15)
-local BtnStroke = UIStroke:Clone()
-BtnStroke.Parent = CheckBtn
-BtnStroke.Thickness = 1.5
-
--- SAĞ PANEL (Hakkında Kısmı)
-local RightPanel = Instance.new("Frame")
-RightPanel.Parent = MainFrame
-RightPanel.BackgroundColor3 = Color3.fromRGB(30, 45, 40)
-RightPanel.Position = UDim2.new(0.52, 0, 0.05, 0)
-RightPanel.Size = UDim2.new(0.45, 0, 0.9, 0)
-RightPanel.BorderSizePixel = 0
-Instance.new("UICorner", RightPanel).CornerRadius = UDim.new(0, 15)
-local RightStroke = UIStroke:Clone()
-RightStroke.Parent = RightPanel
-RightStroke.Thickness = 2
-
-local DescLabel = Instance.new("TextLabel")
-DescLabel.Parent = RightPanel
-DescLabel.BackgroundTransparency = 1
-DescLabel.Position = UDim2.new(0.05, 0, 0.05, 0)
-DescLabel.Size = UDim2.new(0.9, 0, 0.9, 0)
-DescLabel.Font = Enum.Font.Gotham
-DescLabel.TextColor3 = Color3.fromRGB(150, 200, 180)
-DescLabel.TextSize = 13
-DescLabel.TextWrapped = true
-DescLabel.TextXAlignment = Enum.TextXAlignment.Left
-DescLabel.TextYAlignment = Enum.TextYAlignment.Top
-DescLabel.Text = "About Lotus Optimization HUB v2.5 PRO+ is a world-class performance management system designed with advanced engineering to efficiently manage hardware resources and ensure a seamless gaming experience even in high-demand scenarios. Fully compatible with both PC and mobile platforms, this sophisticated software utilizes an AI-driven engine to maximize in-game stability while actively maintaining device thermal health."
-DescLabel.TextTransparency = 1
-
--- ANIMASYON FONKSİYONLARI (Zoom & Fade)
-local function AnimateIn()
-    TweenService:Create(BackgroundOverlay, TweenInfo.new(0.5), {BackgroundTransparency = 0.3}):Play()
-    local mainInfo = TweenInfo.new(0.8, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-    TweenService:Create(MainFrame.UIScale, mainInfo, {Scale = 1}):Play()
-    TweenService:Create(MainFrame, TweenInfo.new(0.5), {BackgroundTransparency = 0}):Play()
-    TweenService:Create(UIStroke, TweenInfo.new(0.5), {Transparency = 0.3}):Play()
-    
-    task.wait(0.2)
-    local contentInfo = TweenInfo.new(0.5)
-    for _, v in pairs(MainFrame:GetDescendants()) do
-        if v:IsA("TextLabel") or v:IsA("TextBox") or v:IsA("TextButton") then
-            TweenService:Create(v, contentInfo, {TextTransparency = 0}):Play()
-        end
-        if v:IsA("GuiObject") and v ~= MainFrame then
-             local targetTrans = (v == KeyInputBox and 0.8 or 0) -- Kutu hafif saydam
-             if v == BackgroundOverlay then targetTrans = 0.3 end
-             if v.Parent == MainFrame or v.Parent == LeftPanel or v.Parent == RightPanel then
-                TweenService:Create(v, contentInfo, {BackgroundTransparency = targetTrans}):Play()
-             end
-        end
-        if v:IsA("UIStroke") then TweenService:Create(v, contentInfo, {Transparency = 0.5}):Play() end
-    end
-end
-
-local function AnimateOut(callback)
-    local outInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
-    TweenService:Create(MainFrame.UIScale, outInfo, {Scale = 0}):Play()
-    TweenService:Create(BackgroundOverlay, outInfo, {BackgroundTransparency = 1}):Play()
-    for _, v in pairs(MainFrame:GetDescendants()) do
-        if v:IsA("GuiObject") or v:IsA("UIStroke") then
-             TweenService:Create(v, outInfo, {Transparency = 1}):Play()
-        end
-    end
-    task.wait(0.6)
-    if callback then callback() end
-end
-
--- MANTIK (LOGIC)
-local Attempts = 0
-CheckBtn.MouseButton1Click:Connect(function()
-    if KeyInputBox.Text == "Lotus26" then
-        CheckBtn.Text = "SUCCESS!"
-        CheckBtn.TextColor3 = Color3.fromRGB(0, 255, 0)
-        AnimateOut(function()
-            ScreenGui:Destroy()
-            getgenv().LotusAuthPassed = true
-            game.StarterGui:SetCore("SendNotification", {Title = "WELCOME"; Text = "Lotus v2.5 PRO+ Loaded"; Duration = 3;})
-        end)
-    else
-        Attempts = Attempts + 1
-        KeyInputBox.Text = ""
-        KeyInputBox.PlaceholderText = "WRONG KEY ("..Attempts.."/3)"
-        local failInfo = TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 2, true)
-        TweenService:Create(BoxStroke, failInfo, {Color = Color3.fromRGB(255, 50, 50), Transparency = 0}):Play()
-        if Attempts >= 3 then
-             CheckBtn.Text = "KICKING..."
-             task.wait(0.5)
-             LocalPlayer:Kick("Security Alert: Wrong Key Limit Reached (3/3).")
-        end
-    end
-end)
-
--- Hover Efektleri
-CheckBtn.MouseEnter:Connect(function() TweenService:Create(BtnStroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(150, 255, 220), Transparency = 0.2}):Play() end)
-CheckBtn.MouseLeave:Connect(function() TweenService:Create(BtnStroke, TweenInfo.new(0.2), {Color = Color3.fromRGB(80, 255, 180), Transparency = 0.5}):Play() end)
-
-AnimateIn()
-repeat task.wait(0.5) until getgenv().LotusAuthPassed == true
-
--- // 1. SERVICE DECLARATION (STARTS AFTER KEY) \\ --
 local Lighting = game:GetService("Lighting")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
@@ -245,7 +30,7 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
    Name = "Lotus •|• Optimization HUB v2.5 PRO+",
    LoadingTitle = "L.A.I.S Loading...",
-   LoadingSubtitle = "Authenticating...",
+   LoadingSubtitle = "Initializing System...",
    Theme = "Ocean", 
    
    ConfigurationSaving = {
@@ -254,8 +39,23 @@ local Window = Rayfield:CreateWindow({
       FileName = "LotusConfigUltra"
    },
    
-   Discord = {Enabled = false, Invite = "", RememberJoins = true},
-   KeySystem = false 
+   Discord = {
+      Enabled = false,
+      Invite = "", 
+      RememberJoins = true 
+   },
+   
+   -- KEY SYSTEM (RESTORED) --
+   KeySystem = true, 
+   KeySettings = {
+      Title = "Lotus Access Manager",
+      Subtitle = "Enter License Key",
+      Note = "Key: Lotus26",
+      FileName = "LotusKeyV25",
+      SaveKey = true,
+      GrabKeyFromSite = false, 
+      Key = "Lotus26" 
+   }
 })
 
 -- // 3. CORE FUNCTIONS \\ --
@@ -656,6 +456,52 @@ TabTools:CreateSlider({
    CurrentValue = 60,
    Flag = "FPSCap", 
    Callback = function(Value) setfpscap(Value) end,
+})
+
+-- // VISUALS (v2.5 PRO+) \\ --
+local TabVisuals = Window:CreateTab("Visual engine", 4483362458)
+
+TabVisuals:CreateSection("Camera Engineering")
+
+TabVisuals:CreateSlider({
+   Name = "Field of View (FOV)",
+   Range = {70, 120},
+   Increment = 1,
+   Suffix = "°",
+   CurrentValue = 70,
+   Flag = "FOVSlider", 
+   Callback = function(Value)
+       local Camera = Workspace.CurrentCamera
+       Camera.FieldOfView = Value
+   end,
+})
+
+TabVisuals:CreateSection("World Ambience")
+
+TabVisuals:CreateDropdown({
+   Name = "Time Changer",
+   Options = {"Day (12:00)", "Night (00:00)", "Sunset (18:00)", "Sunrise (06:00)"},
+   CurrentOption = {"Day (12:00)"},
+   MultipleOptions = false,
+   Flag = "TimeChanger", 
+   Callback = function(Option)
+       local T = Option[1]
+       if T == "Day (12:00)" then Lighting.ClockTime = 12
+       elseif T == "Night (00:00)" then Lighting.ClockTime = 0
+       elseif T == "Sunset (18:00)" then Lighting.ClockTime = 17.5
+       elseif T == "Sunrise (06:00)" then Lighting.ClockTime = 6
+       end
+   end,
+})
+
+TabVisuals:CreateToggle({
+   Name = "Exposure Lock (Fix Brightness)",
+   CurrentValue = false,
+   Callback = function(Value)
+       Lighting.ExposureCompensation = Value and 0 or 0 -- Reset if needed
+       Lighting.GlobalShadows = not Value
+       notify("Visuals", "Exposure Locked.")
+   end,
 })
 
 -- // 11. FINAL INIT \\ --
