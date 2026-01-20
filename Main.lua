@@ -373,7 +373,7 @@ local TabAlt = Window:CreateTab("Alternatives", 4483362458)
 TabAlt:CreateButton({
    Name = "Load Titanium Gen2 AI(highly recommended)",
    Callback = function()
-       notify("Loader", "Injecting Titanium Optimizer...")
+       notify("Loading...", "Injecting Titanium Optimizer...")
        loadstring(game:HttpGet("https://raw.githubusercontent.com/Nenecosturan/Titanium-Optimizer-Gen2-AI/refs/heads/main/Main.lua"))()
    end,
 })
@@ -428,7 +428,7 @@ TabTools:CreateToggle({
    CurrentValue = false,
    Callback = function(Value)
        RunService:Set3dRenderingEnabled(not Value)
-       if Value then notify("COOLING", "Render Stopped.") else notify("COOLING", "Render Restored.") end
+       if Value then notify("Cooling...", "Keep it on for at least 2 minutes to see the effects.") else notify("Cooling stopped", "Cooling has been stopped.") end
    end,
 })
 
@@ -467,7 +467,7 @@ TabVisuals:CreateSection("Camera Engineering")
 
 TabVisuals:CreateSlider({
    Name = "Field of View (FOV)",
-   Range = {70, 150},
+   Range = {70, 130},
    Increment = 1,
    Suffix = "°",
    CurrentValue = 70,
