@@ -62,7 +62,7 @@ local Window = Rayfield:CreateWindow({
 
 -- // 3. CORE FUNCTIONS \\ --
 local function notify(title, content)
-    Rayfield:Notify({Title = title, Content = content, Duration = 1.5, Image = 4483362458})
+    Rayfield:Notify({Title = title, Content = content, Duration = 4, Image = 4483362458})
 end
 
 local function safeHideVisuals(instance)
@@ -229,7 +229,7 @@ TabNuclear:CreateButton({
 })
 
 TabNuclear:CreateButton({
-   Name = "No-Render Mode (Cooldown device)",
+   Name = "No-Render Mode (Hide map parts)",
    Callback = function()
        for _, v in pairs(Workspace:GetDescendants()) do
            if v:IsA("BasePart") then v.Transparency = 1 end
@@ -511,6 +511,6 @@ local TabInfo = Window:CreateTab("Info", 4483362458)
 TabInfo:CreateParagraph({Title = "Current version", Content = "v2.5 PRO+ (Latest)"})
 TabInfo:CreateParagraph({Title = "Change log", Content = "HUD, Server Manager, Fixed key system, L.A.I.S engine v2.0,Added Fov/Time changer"})
 
-Rayfield:Notify({Title = "Lotus v2.5 PRO+", Content = "System Loaded.", Duration = 3, Image = 4483362458})
+Rayfield:Notify({Title = "Lotus v2.5 PRO+", Content = "System Loaded.", Duration = 5, Image = 4483362458})
 Rayfield:LoadConfiguration()
 -- [[ END OF SCRIPT ]] --
