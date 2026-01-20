@@ -7,6 +7,8 @@
     Key: Lotus26
     
     Features:
+    - New tab(Visual Engine)
+    •Tab features:Fov/Time changer
     - Smart Server Manager
     - Lotus Live HUD
     - L.A.I.S v2.0 AI Engine
@@ -436,7 +438,7 @@ TabTools:CreateButton({
    Callback = function()
        local SoundService = game:GetService("SoundService")
        SoundService.DopplerScale = 0 
-       notify("Audio", "3D Audio Disabled.")
+       notify("Audio", "3D Audio Physics Disabled.")
    end,
 })
 
@@ -506,8 +508,8 @@ TabVisuals:CreateToggle({
 
 -- // 11. FINAL INIT \\ --
 local TabInfo = Window:CreateTab("Info", 4483362458)
-TabInfo:CreateParagraph({Title = "Version", Content = "v2.5 PRO+ (Ultra)"})
-TabInfo:CreateParagraph({Title = "Features", Content = "HUD, Server Manager, Custom Key, AI v2.0"})
+TabInfo:CreateParagraph({Title = "Current version", Content = "v2.5 PRO+"})
+TabInfo:CreateParagraph({Title = "Change log", Content = "HUD, Server Manager, Fixed key system, L.A.I.S engine v2.0,Added Fov/Time changer"})
 
 Rayfield:Notify({Title = "Lotus v2.5 PRO+", Content = "System Loaded.", Duration = 5, Image = 4483362458})
 Rayfield:LoadConfiguration()
