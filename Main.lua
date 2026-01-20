@@ -510,7 +510,6 @@ TabVisuals:CreateToggle({
 local TabInfo = Window:CreateTab("Info", 4483362458)
 TabInfo:CreateParagraph({Title = "Current version", Content = "v2.5 PRO+ (Latest)"})
 TabInfo:CreateParagraph({Title = "Change log", Content = "HUD, Server Manager, Fixed key system, L.A.I.S engine v2.0,Added Fov/Time changer"})
-TabInfo:CreateParagraph({Title = "About Lotus Optimization HUB", Content = "Lotus Optimization HUB v2.5 PRO+ is a world-class performance management system designed with advanced engineering to efficiently manage hardware resources and ensure a seamless gaming experience even in high-demand scenarios. Fully compatible with both PC and mobile platforms, this sophisticated software utilizes an AI-driven engine to maximize in-game stability while actively maintaining device thermal health."})
 
 Rayfield:Notify({Title = "Lotus v2.5 PRO+", Content = "System Loaded.", Duration = 5, Image = 4483362458})
 Rayfield:LoadConfiguration()
