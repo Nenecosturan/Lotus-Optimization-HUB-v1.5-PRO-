@@ -47,8 +47,8 @@ local Window = Rayfield:CreateWindow({
       RememberJoins = true 
    },
    
-   -- KEY SYSTEM (STABLE) --
-   KeySystem = true, 
+   -- KEY SYSTEM  --
+   KeySystem = false, 
    KeySettings = {
       Title = "Lotus Access Manager",
       Subtitle = "Enter License Key",
@@ -150,7 +150,7 @@ TabBalanced:CreateButton({
 -- // 6. TAB: AGGRESSIVE OPTIMIZATION \\ --
 local TabAggressive = Window:CreateTab("Aggressive Opt.", 4483362458)
 
-TabAggressive:CreateSection("Smart Cleanup (Non-Destructive)")
+TabAggressive:CreateSection("Smart Cleanup")
 TabAggressive:CreateButton({
    Name = "Hide Textures & Decals (No Crash)",
    Callback = function()
@@ -239,12 +239,12 @@ TabNuclear:CreateButton({
 })
 
 -- // NEW TAB: SERVER MANAGER (v2.5) \\ --
-local TabServer = Window:CreateTab("Server", 4483362458)
+local TabServer = Window:CreateTab("Server settings", 4483362458)
 
 TabServer:CreateSection("Smart Connection")
 
 TabServer:CreateButton({
-   Name = "Rejoin Server (Instant)",
+   Name = "Rejoin Server",
    Callback = function()
        local ts = game:GetService("TeleportService")
        local p = Players.LocalPlayer
@@ -310,7 +310,7 @@ TabAI:CreateToggle({
 TabAI:CreateSection("Elite v3.0 Features")
 
 TabAI:CreateToggle({
-   Name = "Hardware Acceleration (Resource Manager)",
+   Name = "Hardware Acceleration",
    CurrentValue = false,
    Callback = function(Value)
        AI_State.HardwareAccel = Value
@@ -319,7 +319,7 @@ TabAI:CreateToggle({
 })
 
 TabAI:CreateToggle({
-   Name = "Network Optimizer v2 (Aggressive Ping)",
+   Name = "Network Optimizer v2",
    CurrentValue = false,
    Callback = function(Value)
        AI_State.PingStabilizer = Value
@@ -331,15 +331,15 @@ TabAI:CreateToggle({
 })
 
 TabAI:CreateToggle({
-   Name = "Neural Emergency (FPS < 25 Fix)",
-   CurrentValue = false,
+   Name = "Smart emergency boost (keep it on)",
+   CurrentValue = True,
    Callback = function(Value) AI_State.EmergencyMode = Value end,
 })
 
 TabAI:CreateSection("Intelligent Features")
 
 TabAI:CreateToggle({
-   Name = "Active Frustum Culling (Camera Render)",
+   Name = "Active Frustum Culling (BETA)",
    CurrentValue = false,
    Callback = function(Value)
        _G.FrustumCulling = Value
@@ -490,7 +490,7 @@ TabTools:CreateToggle({
            UserInputService.WindowFocused:Connect(function()
                if _G.SmartBG then setfpscap(60); RunService:Set3dRenderingEnabled(true) end
            end)
-           notify("Power", "Auto-Eco Enabled. FPS drops when AFK.")
+           notify("Power", "Auto-Eco Enabled. FPS drops when Roblox is on background.")
        end
    end,
 })
@@ -501,7 +501,7 @@ TabTools:CreateToggle({
    CurrentValue = false,
    Callback = function(Value)
        RunService:Set3dRenderingEnabled(not Value)
-       if Value then notify("Cooling...", "Keep it on for at least 2 minutes.") else notify("Cooling stopped", "Cooling has been stopped.") end
+       if Value then notify("Cooling...", "Keep it on for at least 2 minutes for the effects.") else notify("Cooling stopped", "Cooling has been stopped.") end
    end,
 })
 
@@ -525,7 +525,7 @@ TabTools:CreateButton({
 
 TabTools:CreateSlider({
    Name = "FPS Cap Limit",
-   Range = {30, 1080},
+   Range = {5, 1080},
    Increment = 1,
    Suffix = "FPS",
    CurrentValue = 60,
@@ -540,7 +540,7 @@ TabVisuals:CreateSection("Visual Enhancements")
 
 -- NEW: Material Service Downgrader
 TabVisuals:CreateToggle({
-   Name = "Material Downgrade (Old Roblox textures)",
+   Name = "Material Downgrade (Perm until rejoin)",
    CurrentValue = false,
    Callback = function(Value)
        if Value then
