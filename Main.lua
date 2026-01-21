@@ -580,7 +580,7 @@ TabVisuals:CreateToggle({
 -- // 11. FINAL INIT \\ --
 local TabInfo = Window:CreateTab("Info", 4483362458)
 TabInfo:CreateParagraph({Title = "Current version", Content = "v3.0 PRO+ (Latest)"})
-TabInfo:CreateParagraph({Title = "Change log", Content = "Back to Stable version,minimal changes."})
+TabInfo:CreateParagraph({Title = "Change log", Content = "Back to Stable version,minimal changes,gui opt., ai culling(BETA,network stabilizer v2,hardware accel."})
 
 Rayfield:Notify({Title = "Lotus v3.0 PRO+", Content = "Neural System Loaded.", Duration = 5, Image = 4483362458})
 Rayfield:LoadConfiguration()
