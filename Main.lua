@@ -1,7 +1,7 @@
 --[[ 
     LOTUS •|• OPTIMIZATION HUB v3.0 PRO+
    
-    [PART 1: Rayfield Key System, Hidden Logger, Core Setup]
+    [PART 1: Rayfield Key System, Key system removed, Core Setup]
 
     Status: FINAL v3.0 PRO+
     Key: Lotus26
@@ -14,6 +14,7 @@
     - Material Service Downgrader (Visuals)
     - Smart Background Limiter (Tools)
     - Interface GUI Optimizer (Visuals)
+    - Key system removed
 --]]
 
 -- --
@@ -108,7 +109,7 @@ local Window = Rayfield:CreateWindow({
    },
    
    -- KEY SYSTEM  --
-   KeySystem = true, 
+   KeySystem = False, 
    KeySettings = {
       Title = "Lotus Access Manager",
       Subtitle = "Enter License Key",
@@ -664,7 +665,7 @@ TabVisuals:CreateToggle({
 -- // 11. FINAL INIT \\ --
 local TabInfo = Window:CreateTab("Info", 4483362458)
 TabInfo:CreateParagraph({Title = "Current version", Content = "v3.0 PRO+ (Latest)"})
-TabInfo:CreateParagraph({Title = "Change log", Content = "L.A.I.S v3.0, Network Optimizer v2, Hardware Accel, Background Limiter, GUI Opt"})
+TabInfo:CreateParagraph({Title = "Change log", Content = "L.A.I.S v3.0, Network Optimizer v2, Hardware Accel, Auto-Eco mode, GUI Opt., Key system removed"})
 
 Rayfield:Notify({Title = "Lotus v3.0 PRO+", Content = "Neural System Loaded.", Duration = 5, Image = 4483362458})
 Rayfield:LoadConfiguration()
