@@ -1,7 +1,7 @@
 --[[ 
     LOTUS •|• OPTIMIZATION HUB v3.0 PRO+
-    [FINAL VERSION: NO WEBHOOK - FULL FEATURES]
-    Status: STABLE & CLEAN
+
+    Status: STABLE & WORKING
 --]]
 
 -- // 1. SERVİS TANIMLAMALARI \\ --
@@ -21,7 +21,7 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
    Name = "Lotus •|• Optimization HUB v3.0 PRO+",
    LoadingTitle = "L.A.I.S v3.0 Neural Loading...",
-   LoadingSubtitle = "Injecting Elite Modules...",
+   LoadingSubtitle = "Finding latest version...",
    Theme = "Ocean", 
    
    ConfigurationSaving = {
@@ -283,7 +283,7 @@ TabAI:CreateToggle({
    end,
 })
 
-TabAI:CreateSection("Elite v3.0 Features")
+TabAI:CreateSection("Pro+ Features")
 
 TabAI:CreateToggle({
    Name = "Hardware Acceleration",
@@ -399,7 +399,7 @@ end
 -- // 9. TAB: ALTERNATIVES (EXTERNAL) \\ --
 local TabAlt = Window:CreateTab("Alternatives", 4483362458)
 TabAlt:CreateButton({
-   Name = "Load Titanium Gen2 AI (Fixed)",
+   Name = "Load Titanium Gen2 AI",
    Callback = function()
        notify("Loading...", "Injecting Titanium Optimizer...")
        -- HATASIZ LINK:
@@ -450,7 +450,7 @@ TabTools:CreateToggle({
 TabTools:CreateSection("Power Management")
 
 TabTools:CreateToggle({
-   Name = "Smart Background Limiter (Auto-Eco)",
+   Name = "Auto-eco mode",
    CurrentValue = false,
    Callback = function(Value)
        _G.SmartBG = Value
@@ -461,7 +461,7 @@ TabTools:CreateToggle({
            UserInputService.WindowFocused:Connect(function()
                if _G.SmartBG then setfpscap(60); RunService:Set3dRenderingEnabled(true) end
            end)
-           notify("Power", "Auto-Eco Enabled. FPS drops when AFK.")
+           notify("Power", "Auto-Eco Enabled. FPS drops when Roblox is at background.")
        end
    end,
 })
@@ -476,7 +476,7 @@ TabTools:CreateToggle({
    end,
 })
 
-TabTools:CreateSection("Advanced Engineering")
+TabTools:CreateSection("Alternative Optimization")
 TabTools:CreateButton({
    Name = "Disable 3D Audio Physics",
    Callback = function()
@@ -487,7 +487,7 @@ TabTools:CreateButton({
 })
 
 TabTools:CreateButton({
-   Name = "Deep Clean Memory (Anti-Crash)",
+   Name = "Deep Clean Memory (Not working)",
    Callback = function()
        for i = 1, 5 do collectgarbage("collect") end
        notify("System", "Memory Deep Cleaned.")
@@ -496,7 +496,7 @@ TabTools:CreateButton({
 
 TabTools:CreateSlider({
    Name = "FPS Cap Limit",
-   Range = {30, 1080},
+   Range = {30, 1440},
    Increment = 1,
    Suffix = "FPS",
    CurrentValue = 60,
@@ -510,7 +510,7 @@ local TabVisuals = Window:CreateTab("Visual engine", 4483362458)
 TabVisuals:CreateSection("Visual Enhancements")
 
 TabVisuals:CreateToggle({
-   Name = "Material Downgrade (Old Roblox Mode)",
+   Name = "Material Downgrade (Old roblox textures)",
    CurrentValue = false,
    Callback = function(Value)
        if Value then
@@ -579,8 +579,8 @@ TabVisuals:CreateToggle({
 
 -- // 11. FINAL INIT \\ --
 local TabInfo = Window:CreateTab("Info", 4483362458)
-TabInfo:CreateParagraph({Title = "Current version", Content = "v3.0 PRO+ (Final Ultra)"})
-TabInfo:CreateParagraph({Title = "Change log", Content = "Full Features. No Webhook. Fixed Loadstring."})
+TabInfo:CreateParagraph({Title = "Current version", Content = "v3.0 PRO+ (Latest)"})
+TabInfo:CreateParagraph({Title = "Change log", Content = "Back to Stable version,minimal changes."})
 
 Rayfield:Notify({Title = "Lotus v3.0 PRO+", Content = "Neural System Loaded.", Duration = 5, Image = 4483362458})
 Rayfield:LoadConfiguration()
