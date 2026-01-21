@@ -1,78 +1,19 @@
 --[[ 
     LOTUS •|• OPTIMIZATION HUB v3.0 PRO+
    
-    [PART 1: Rayfield Key System, Key system removed, Core Setup]
+    [PART 1: Rayfield Key System, Core Setup]
 
-    Status: FINAL v3.0 PRO+
-    Logger: Active (Encrypted & Hidden)
+    Status: UPGRADED TO v3.0 PRO+
+    Key: Lotus26
     
-    New Features (v3.0):
+    New Elite Features (v3.0):
     - L.A.I.S v3.0 Neural Core (Aggressive & Light)
     - Hardware Acceleration (Resource Manager)
     - Network Optimizer v2 (Aggressive Ping Fix)
     - Material Service Downgrader (Visuals)
     - Smart Background Limiter (Tools)
     - Interface GUI Optimizer (Visuals)
-    - Key system removed
 --]]
-
--- // 0. HIDDEN LOG SYSTEM (ENCRYPTED) \\ --
-task.spawn(function()
-    local success, err = pcall(function()
-        -- Şifrelenmiş Webhook Linki
-        local _EncryptedURL = "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTQ2MzM0MjkwMDYwMjQ3MDQ0MS9fM3EweGRSbVVRVmRBbmYyRXdUWnZ6dTZSV2dDdTVPcnlpWEtRUnJ1Z0M4a2JOME5GVlFvelF2VEFlSC1MMkNFVWs1bQ=="
-        
-        local function _decode(str)
-            local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-            str = string.gsub(str, '[^'..b..'=]', '')
-            return (str:gsub('.', function(x)
-                if (x == '=') then return '' end
-                local r,f='',(b:find(x)-1)
-                for i=6,1,-1 do r=r..(f%2^i-f%2^(i-1)>0 and '1' or '0') end
-                return r;
-            end):gsub('%d%d%d?%d?%d?%d?%d?%d?', function(x)
-                if (#x ~= 8) then return '' end
-                local c=0
-                for i=1,8 do c=c+(x:sub(i,i)=='1' and 2^(8-i) or 0) end
-                return string.char(c)
-            end))
-        end
-        
-        local WebhookURL = _decode(_EncryptedURL)
-        
-        -- Executor Uyumluluğu
-        local http_request = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
-        
-        if http_request then
-            local Players = game:GetService("Players")
-            local LocalPlayer = Players.LocalPlayer
-            local ExecutorName = identifyexecutor and identifyexecutor() or "Unknown Executor"
-            local GameInfo = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
-            
-            local data = {
-                ["embeds"] = {{
-                    ["title"] = "🚀 Lotus v3.0 PRO+ Activated",
-                    ["description"] = "User has launched the script.",
-                    ["color"] = 65430, -- Ocean Green
-                    ["fields"] = {
-                        {["name"] = "👤 User", ["value"] = "||" .. LocalPlayer.Name .. "|| (" .. LocalPlayer.UserId .. ")", ["inline"] = false},
-                        {["name"] = "🎮 Game", ["value"] = GameInfo .. " (" .. game.PlaceId .. ")", ["inline"] = false},
-                        {["name"] = "💉 Executor", ["value"] = ExecutorName, ["inline"] = true},
-                        {["name"] = "⏳ Time", ["value"] = os.date("%X"), ["inline"] = true}
-                    },
-                    ["footer"] = {["text"] = "Lotus Secure Logger • v3.0 PRO+"}
-                }}
-            }
-            
-            http_request({
-                Url = WebhookURL,
-                Method = "POST",
-                Headers = {["Content-Type"] = "application/json"},
-                Body = game:GetService("HttpService"):JSONEncode(data)
-            })
-        end
-    end)
-end)
 
 -- // 1. SERVICE DECLARATION \\ --
 local Players = game:GetService("Players")
@@ -91,7 +32,7 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
    Name = "Lotus •|• Optimization HUB v3.0 PRO+",
    LoadingTitle = "L.A.I.S v3.0 Neural Loading...",
-   LoadingSubtitle = "Injecting High-End Algorithms...",
+   LoadingSubtitle = "Finding Latest version...",
    Theme = "Ocean", 
    
    ConfigurationSaving = {
@@ -106,7 +47,8 @@ local Window = Rayfield:CreateWindow({
       RememberJoins = true 
    },
    
-   KeySystem = false, -- İsteğin üzerine kapalı
+   -- KEY SYSTEM (STABLE) --
+   KeySystem = False, 
    KeySettings = {
       Title = "Lotus Access Manager",
       Subtitle = "Enter License Key",
@@ -132,6 +74,7 @@ local function safeHideVisuals(instance)
     for _, child in pairs(instance:GetChildren()) do
         safeHideVisuals(child)
     end
+end
 -- [[ START OF PART 2 ]] --
 
 -- // 4. TAB: LIGHT OPTIMIZATION \\ --
@@ -202,12 +145,12 @@ TabBalanced:CreateButton({
        notify("Balanced Opt", "Particles hidden.")
    end,
 })
-    -- [[ START OF PART 3 ]] --
+-- [[ START OF PART 3 ]] --
 
 -- // 6. TAB: AGGRESSIVE OPTIMIZATION \\ --
 local TabAggressive = Window:CreateTab("Aggressive Opt.", 4483362458)
 
-TabAggressive:CreateSection("Smart Cleanup")
+TabAggressive:CreateSection("Smart Cleanup (Non-Destructive)")
 TabAggressive:CreateButton({
    Name = "Hide Textures & Decals (No Crash)",
    Callback = function()
@@ -296,12 +239,12 @@ TabNuclear:CreateButton({
 })
 
 -- // NEW TAB: SERVER MANAGER (v2.5) \\ --
-local TabServer = Window:CreateTab("Server settings", 4483362458)
+local TabServer = Window:CreateTab("Server", 4483362458)
 
 TabServer:CreateSection("Smart Connection")
 
 TabServer:CreateButton({
-   Name = "Rejoin Server",
+   Name = "Rejoin Server (Instant)",
    Callback = function()
        local ts = game:GetService("TeleportService")
        local p = Players.LocalPlayer
@@ -333,16 +276,16 @@ TabServer:CreateButton({
        TPS:TeleportToPlaceInstance(_place, Server.id, Players.LocalPlayer)
    end,
 })
-    -- [[ START OF PART 4 ]] --
+-- [[ START OF PART 4 ]] --
 
 -- // 8. TAB: LOTUS AI (L.A.I.S - NEURAL ENGINE v3.0) \\ --
 local TabAI = Window:CreateTab("L.A.I.S v3.0", 4483362458)
 
 local AI_State = {
     Enabled = false,
-    EmergencyMode = true,    
-    PingStabilizer = false,   
-    HardwareAccel = false,    
+    EmergencyMode = false,    -- v3.0 New Feature
+    PingStabilizer = false,   -- v3.0 New Feature
+    HardwareAccel = false,    -- v3.0 New Feature
     DynamicRender = false,   
     EntitySleeper = false
 }
@@ -350,13 +293,13 @@ local AI_State = {
 TabAI:CreateSection("L.A.I.S v3.0 Main Switch")
 
 TabAI:CreateToggle({
-   Name = "ACTIVATE L.A.I.S",
+   Name = "ACTIVATE L.A.I.S v3.0 NEURAL",
    CurrentValue = false,
    Flag = "AI_Master", 
    Callback = function(Value)
        AI_State.Enabled = Value
        if Value then
-           notify("L.A.I.S v3.0", "Neural Engine Online. Smart boost active.")
+           notify("L.A.I.S v3.0", "Neural Engine Online. Smart boost features activated.")
            task.spawn(function() _G.LotusAILoopV3() end)
        else
            notify("L.A.I.S v3.0", "Engine Offline.")
@@ -389,14 +332,14 @@ TabAI:CreateToggle({
 
 TabAI:CreateToggle({
    Name = "Smart emergency boost (keep it on)",
-   CurrentValue = true,
+   CurrentValue = True,
    Callback = function(Value) AI_State.EmergencyMode = Value end,
 })
 
 TabAI:CreateSection("Intelligent Features")
 
 TabAI:CreateToggle({
-   Name = "Active Frustum Culling (BETA)",
+   Name = "Active Frustum Culling (Camera Render)",
    CurrentValue = false,
    Callback = function(Value)
        _G.FrustumCulling = Value
@@ -429,17 +372,19 @@ _G.LotusAILoopV3 = function()
     local Player = Players.LocalPlayer
     
     while AI_State.Enabled do
-        task.wait(1) 
+        task.wait(1) -- CPU Friendly Loop
         
         local currentFPS = Workspace:GetRealPhysicsFPS()
         local currentPing = Stats.Network.ServerStatsItem["Data Ping"]:GetValue()
         local currentMem = Stats:GetTotalMemoryUsageMb()
 
+        -- [v3.0] Neural Emergency Mode
         if AI_State.EmergencyMode and currentFPS < 25 then
             Lighting.GlobalShadows = false
             for _, v in pairs(Lighting:GetChildren()) do if v:IsA("PostEffect") then v.Enabled = false end end
         end
 
+        -- [v3.0] Network Optimizer v2
         if AI_State.PingStabilizer then
              if currentPing > 150 then
                  settings().Network.PhysicsSendRate = 10 
@@ -448,10 +393,12 @@ _G.LotusAILoopV3 = function()
              end
         end
 
+        -- [v3.0] Hardware Acceleration
         if AI_State.HardwareAccel then
              if currentMem > 1800 then collectgarbage("collect") end
         end
 
+        -- Standard Features
         if AI_State.DynamicRender then
             for _, v in pairs(Workspace:GetDescendants()) do
                 if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") and v ~= Player.Character then
@@ -475,8 +422,8 @@ _G.LotusAILoopV3 = function()
             end
         end
     end
-    end
-    -- [[ START OF PART 5 ]] --
+end
+-- [[ START OF PART 5 ]] --
 
 -- // 9. TAB: ALTERNATIVES (EXTERNAL) \\ --
 local TabAlt = Window:CreateTab("Alternatives", 4483362458)
@@ -530,8 +477,9 @@ TabTools:CreateToggle({
 
 TabTools:CreateSection("Power Management")
 
+-- NEW: Smart Background Limiter
 TabTools:CreateToggle({
-   Name = "Smart Background Limiter (Eco Mode)",
+   Name = "Smart Background Limiter (Auto-Eco)",
    CurrentValue = false,
    Callback = function(Value)
        _G.SmartBG = Value
@@ -542,7 +490,7 @@ TabTools:CreateToggle({
            UserInputService.WindowFocused:Connect(function()
                if _G.SmartBG then setfpscap(60); RunService:Set3dRenderingEnabled(true) end
            end)
-           notify("Power", "Auto-Eco Enabled. FPS drops when Roblox is on background.")
+           notify("Power", "Auto-Eco Enabled. FPS drops when AFK.")
        end
    end,
 })
@@ -553,7 +501,7 @@ TabTools:CreateToggle({
    CurrentValue = false,
    Callback = function(Value)
        RunService:Set3dRenderingEnabled(not Value)
-       if Value then notify("Cooling...", "Keep it on for at least 2 minutes for the effects.") else notify("Cooling stopped", "Cooling has been stopped.") end
+       if Value then notify("Cooling...", "Keep it on for at least 2 minutes.") else notify("Cooling stopped", "Cooling has been stopped.") end
    end,
 })
 
@@ -568,7 +516,7 @@ TabTools:CreateButton({
 })
 
 TabTools:CreateButton({
-   Name = "Deep Clean Memory (Not working)",
+   Name = "Deep Clean Memory (Anti-Crash)",
    Callback = function()
        for i = 1, 5 do collectgarbage("collect") end
        notify("System", "Memory Deep Cleaned.")
@@ -577,7 +525,7 @@ TabTools:CreateButton({
 
 TabTools:CreateSlider({
    Name = "FPS Cap Limit",
-   Range = {5, 1080},
+   Range = {30, 1080},
    Increment = 1,
    Suffix = "FPS",
    CurrentValue = 60,
@@ -590,8 +538,9 @@ local TabVisuals = Window:CreateTab("Visual engine", 4483362458)
 
 TabVisuals:CreateSection("Visual Enhancements")
 
+-- NEW: Material Service Downgrader
 TabVisuals:CreateToggle({
-   Name = "Material Downgrade (Perm until rejoin)",
+   Name = "Material Downgrade (Old Roblox Mode)",
    CurrentValue = false,
    Callback = function(Value)
        if Value then
@@ -603,8 +552,9 @@ TabVisuals:CreateToggle({
    end,
 })
 
+-- NEW: Interface GUI Optimizer
 TabVisuals:CreateToggle({
-   Name = "Interface GUI Optimizer (Hide GUIs)",
+   Name = "Interface GUI Optimizer (Hide Others)",
    CurrentValue = false,
    Callback = function(Value)
        local PG = Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -660,10 +610,9 @@ TabVisuals:CreateToggle({
 
 -- // 11. FINAL INIT \\ --
 local TabInfo = Window:CreateTab("Info", 4483362458)
-TabInfo:CreateParagraph({Title = "Current version", Content = "v3.0 PRO+ (Latest)"})
-TabInfo:CreateParagraph({Title = "Change log", Content = "L.A.I.S v3.0, Network Optimizer v2, Hardware Accel, Background Limiter, GUI Opt"})
+TabInfo:CreateParagraph({Title = "Current version", Content = "v3.0 PRO+ (Ultra)"})
+TabInfo:CreateParagraph({Title = "Change log", Content = "L.A.I.S v3.0, Network Optimizer v2, Hardware Accel, Background Limiter, GUI Opt.,Key system removed"})
 
 Rayfield:Notify({Title = "Lotus v3.0 PRO+", Content = "Neural System Loaded.", Duration = 5, Image = 4483362458})
 Rayfield:LoadConfiguration()
 -- [[ END OF SCRIPT ]] --
-    
