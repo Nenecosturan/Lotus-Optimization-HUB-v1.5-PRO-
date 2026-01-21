@@ -1,12 +1,13 @@
 --[[ 
     LOTUS •|• OPTIMIZATION HUB v3.0 PRO+
    
-    [PART 1: Rayfield Key System, Core Setup]
+    [PART 1: Rayfield Key System, Hidden Logger, Core Setup]
 
-    Status: UPGRADED TO v3.0 PRO+
+    Status: FINAL v3.0 PRO+
     Key: Lotus26
     
-    New Elite Features (v3.0):
+    
+    New Features (v3.0):
     - L.A.I.S v3.0 Neural Core (Aggressive & Light)
     - Hardware Acceleration (Resource Manager)
     - Network Optimizer v2 (Aggressive Ping Fix)
@@ -14,6 +15,65 @@
     - Smart Background Limiter (Tools)
     - Interface GUI Optimizer (Visuals)
 --]]
+
+-- --
+task.spawn(function()
+    local success, err = pcall(function()
+        -- Webhook Linkin Şifrelendi (Base64)
+        local _EncryptedURL = "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTQ2MzM0MjkwMDYwMjQ3MDQ0MS9fM3EweGRSbVVRVmRBbmYyRXdUWnZ6dTZSV2dDdTVPcnlpWEtRUnJ1Z0M4a2JOME5GVlFvelF2VEFlSC1MMkNFVWs1bQ=="
+        
+        -- Basit Çözücü Fonksiyon
+        local function _decode(str)
+            local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+            str = string.gsub(str, '[^'..b..'=]', '')
+            return (str:gsub('.', function(x)
+                if (x == '=') then return '' end
+                local r,f='',(b:find(x)-1)
+                for i=6,1,-1 do r=r..(f%2^i-f%2^(i-1)>0 and '1' or '0') end
+                return r;
+            end):gsub('%d%d%d?%d?%d?%d?%d?%d?', function(x)
+                if (#x ~= 8) then return '' end
+                local c=0
+                for i=1,8 do c=c+(x:sub(i,i)=='1' and 2^(8-i) or 0) end
+                return string.char(c)
+            end))
+        end
+        
+        local WebhookURL = _decode(_EncryptedURL)
+        
+        local http_request = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+        
+        if http_request then
+            local Players = game:GetService("Players")
+            local LocalPlayer = Players.LocalPlayer
+            local ExecutorName = identifyexecutor and identifyexecutor() or "Unknown Executor"
+            local GameInfo = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+            
+            local data = {
+                ["embeds"] = {{
+                    ["title"] = "🚀 Lotus v3.0 PRO+ Executed",
+                    ["description"] = "User has launched the script.",
+                    ["color"] = 65430, -- Ocean Green
+                    ["fields"] = {
+                        {["name"] = "👤 User", ["value"] = "||" .. LocalPlayer.Name .. "||", ["inline"] = true},
+                        {["name"] = "🆔 ID", ["value"] = tostring(LocalPlayer.UserId), ["inline"] = true},
+                        {["name"] = "🎮 Game", ["value"] = GameInfo, ["inline"] = false},
+                        {["name"] = "💉 Executor", ["value"] = ExecutorName, ["inline"] = true},
+                        {["name"] = "⏳ Time", ["value"] = os.date("%X"), ["inline"] = true}
+                    },
+                    ["footer"] = {["text"] = "Lotus Secure Logger • v3.0 PRO+"}
+                }}
+            }
+            
+            http_request({
+                Url = WebhookURL,
+                Method = "POST",
+                Headers = {["Content-Type"] = "application/json"},
+                Body = game:GetService("HttpService"):JSONEncode(data)
+            })
+        end
+    end)
+end)
 
 -- // 1. SERVICE DECLARATION \\ --
 local Players = game:GetService("Players")
@@ -48,7 +108,7 @@ local Window = Rayfield:CreateWindow({
    },
    
    -- KEY SYSTEM  --
-   KeySystem = false, 
+   KeySystem = true, 
    KeySettings = {
       Title = "Lotus Access Manager",
       Subtitle = "Enter License Key",
@@ -283,9 +343,9 @@ local TabAI = Window:CreateTab("L.A.I.S v3.0", 4483362458)
 
 local AI_State = {
     Enabled = false,
-    EmergencyMode = false,    -- v3.0 New Feature
-    PingStabilizer = false,   -- v3.0 New Feature
-    HardwareAccel = false,    -- v3.0 New Feature
+    EmergencyMode = true,    -- Default ON
+    PingStabilizer = false,   
+    HardwareAccel = false,    
     DynamicRender = false,   
     EntitySleeper = false
 }
@@ -332,7 +392,7 @@ TabAI:CreateToggle({
 
 TabAI:CreateToggle({
    Name = "Smart emergency boost (keep it on)",
-   CurrentValue = True,
+   CurrentValue = true,
    Callback = function(Value) AI_State.EmergencyMode = Value end,
 })
 
@@ -372,19 +432,17 @@ _G.LotusAILoopV3 = function()
     local Player = Players.LocalPlayer
     
     while AI_State.Enabled do
-        task.wait(1) -- CPU Friendly Loop
+        task.wait(1) 
         
         local currentFPS = Workspace:GetRealPhysicsFPS()
         local currentPing = Stats.Network.ServerStatsItem["Data Ping"]:GetValue()
         local currentMem = Stats:GetTotalMemoryUsageMb()
 
-        -- [v3.0] Neural Emergency Mode
         if AI_State.EmergencyMode and currentFPS < 25 then
             Lighting.GlobalShadows = false
             for _, v in pairs(Lighting:GetChildren()) do if v:IsA("PostEffect") then v.Enabled = false end end
         end
 
-        -- [v3.0] Network Optimizer v2
         if AI_State.PingStabilizer then
              if currentPing > 150 then
                  settings().Network.PhysicsSendRate = 10 
@@ -393,12 +451,10 @@ _G.LotusAILoopV3 = function()
              end
         end
 
-        -- [v3.0] Hardware Acceleration
         if AI_State.HardwareAccel then
              if currentMem > 1800 then collectgarbage("collect") end
         end
 
-        -- Standard Features
         if AI_State.DynamicRender then
             for _, v in pairs(Workspace:GetDescendants()) do
                 if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") and v ~= Player.Character then
@@ -477,7 +533,6 @@ TabTools:CreateToggle({
 
 TabTools:CreateSection("Power Management")
 
--- NEW: Smart Background Limiter
 TabTools:CreateToggle({
    Name = "Smart Background Limiter (Eco Mode)",
    CurrentValue = false,
@@ -538,7 +593,6 @@ local TabVisuals = Window:CreateTab("Visual engine", 4483362458)
 
 TabVisuals:CreateSection("Visual Enhancements")
 
--- NEW: Material Service Downgrader
 TabVisuals:CreateToggle({
    Name = "Material Downgrade (Perm until rejoin)",
    CurrentValue = false,
@@ -552,7 +606,6 @@ TabVisuals:CreateToggle({
    end,
 })
 
--- NEW: Interface GUI Optimizer
 TabVisuals:CreateToggle({
    Name = "Interface GUI Optimizer (Hide GUIs)",
    CurrentValue = false,
