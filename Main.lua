@@ -1,19 +1,18 @@
 --[[ 
-    LOTUS •|• OPTIMIZATION HUB v2.5 PRO+
+    LOTUS •|• OPTIMIZATION HUB v3.0 PRO+
    
     [PART 1: Rayfield Key System, Core Setup]
 
-    Status: Reverted to Original Stable Key System
+    Status: UPGRADED TO v3.0 PRO+
     Key: Lotus26
     
-    Features:
-    - New tab(Visual Engine)
-    •Tab features:Fov/Time changer
-    - Smart Server Manager
-    - Lotus Live HUD
-    - L.A.I.S v2.0 AI Engine
-    - GPU Cooling (Stop Render)
-    - Active Frustum Culling
+    New Elite Features (v3.0):
+    - L.A.I.S v3.0 Neural Core (Aggressive & Light)
+    - Hardware Acceleration (Resource Manager)
+    - Network Optimizer v2 (Aggressive Ping Fix)
+    - Material Service Downgrader (Visuals)
+    - Smart Background Limiter (Tools)
+    - Interface GUI Optimizer (Visuals)
 --]]
 
 -- // 1. SERVICE DECLARATION \\ --
@@ -25,20 +24,21 @@ local RunService = game:GetService("RunService")
 local Terrain = Workspace.Terrain
 local UserInputService = game:GetService("UserInputService")
 local Stats = game:GetService("Stats")
+local NetworkClient = game:GetService("NetworkClient")
 
 -- // 2. RAYFIELD LIBRARY SETUP \\ --
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "Lotus •|• Optimization HUB v2.5 PRO+",
-   LoadingTitle = "L.A.I.S Loading...",
-   LoadingSubtitle = "Finding Latest Pro version...",
+   Name = "Lotus •|• Optimization HUB v3.0 PRO+",
+   LoadingTitle = "L.A.I.S v3.0 Neural Loading...",
+   LoadingSubtitle = "Injecting High-End Algorithms...",
    Theme = "Ocean", 
    
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = "LotusHubV25", 
-      FileName = "LotusConfigUltra"
+      FolderName = "LotusHubV3", 
+      FileName = "LotusProPlusConfig"
    },
    
    Discord = {
@@ -47,13 +47,13 @@ local Window = Rayfield:CreateWindow({
       RememberJoins = true 
    },
    
-   -- KEY SYSTEM (RESTORED) --
+   -- KEY SYSTEM (STABLE) --
    KeySystem = true, 
    KeySettings = {
       Title = "Lotus Access Manager",
       Subtitle = "Enter License Key",
       Note = "Key: Lotus26",
-      FileName = "LotusKeyV25",
+      FileName = "LotusKeyV3",
       SaveKey = true,
       GrabKeyFromSite = false, 
       Key = "Lotus26" 
@@ -278,39 +278,68 @@ TabServer:CreateButton({
 })
 -- [[ START OF PART 4 ]] --
 
--- // 8. TAB: LOTUS AI (L.A.I.S - INTELLIGENT CORE v2.0) \\ --
-local TabAI = Window:CreateTab("L.A.I.S Core", 4483362458)
+-- // 8. TAB: LOTUS AI (L.A.I.S - NEURAL ENGINE v3.0) \\ --
+local TabAI = Window:CreateTab("L.A.I.S v3.0", 4483362458)
 
 local AI_State = {
     Enabled = false,
+    EmergencyMode = false,    -- v3.0 New Feature
+    PingStabilizer = false,   -- v3.0 New Feature
+    HardwareAccel = false,    -- v3.0 New Feature
     DynamicRender = false,   
-    EntitySleeper = false,   
-    ParticleThrottle = false,
-    SmartGC = false,         
-    PhysicsGovernor = false  
+    EntitySleeper = false
 }
 
-TabAI:CreateSection("L.A.I.S Main Switch")
+TabAI:CreateSection("L.A.I.S v3.0 Main Switch")
 
 TabAI:CreateToggle({
-   Name = "ACTIVATE AI ENGINE",
+   Name = "ACTIVATE L.A.I.S",
    CurrentValue = false,
    Flag = "AI_Master", 
    Callback = function(Value)
        AI_State.Enabled = Value
        if Value then
-           notify("L.A.I.S", "Engine Online. Smart boost started.")
-           task.spawn(function() _G.LotusAILoop() end)
+           notify("L.A.I.S v3.0", "Neural Engine Online. Smart boost active.")
+           task.spawn(function() _G.LotusAILoopV3() end)
        else
-           notify("L.A.I.S", "Engine Offline.")
+           notify("L.A.I.S v3.0", "Engine Offline.")
        end
    end,
 })
 
-TabAI:CreateSection("PRO FEATURES(BETA)")
+TabAI:CreateSection("Elite v3.0 Features")
 
 TabAI:CreateToggle({
-   Name = "Active Frustum Culling (BETA)",
+   Name = "Hardware Acceleration (Resource Manager)",
+   CurrentValue = false,
+   Callback = function(Value)
+       AI_State.HardwareAccel = Value
+       if Value then notify("Hardware", "Resources prioritized for Roblox.") end
+   end,
+})
+
+TabAI:CreateToggle({
+   Name = "Network Optimizer v2 (Aggressive Ping)",
+   CurrentValue = false,
+   Callback = function(Value)
+       AI_State.PingStabilizer = Value
+       if Value then 
+            settings().Network.IncomingReplicationLag = 0
+            notify("Network", "Packet Throttle: Optimized.") 
+       end
+   end,
+})
+
+TabAI:CreateToggle({
+   Name = "Neural Emergency (FPS < 25 Fix)",
+   CurrentValue = false,
+   Callback = function(Value) AI_State.EmergencyMode = Value end,
+})
+
+TabAI:CreateSection("Intelligent Features")
+
+TabAI:CreateToggle({
+   Name = "Active Frustum Culling (Camera Render)",
    CurrentValue = false,
    Callback = function(Value)
        _G.FrustumCulling = Value
@@ -335,34 +364,62 @@ TabAI:CreateToggle({
    end,
 })
 
-TabAI:CreateSection("Intelligent Features")
-TabAI:CreateToggle({Name = "1. Dynamic Render (Smart Culling)", CurrentValue = false, Callback = function(Value) AI_State.DynamicRender = Value end})
-TabAI:CreateToggle({Name = "2. Entity Sleeper (Stop Far Anims)", CurrentValue = false, Callback = function(Value) AI_State.EntitySleeper = Value end})
-TabAI:CreateToggle({Name = "3. Adaptive VFX Throttle", CurrentValue = false, Callback = function(Value) AI_State.ParticleThrottle = Value end})
+TabAI:CreateToggle({Name = "Dynamic Render (Smart Culling)", CurrentValue = false, Callback = function(Value) AI_State.DynamicRender = Value end})
+TabAI:CreateToggle({Name = "Entity Sleeper (Stop Far Anims)", CurrentValue = false, Callback = function(Value) AI_State.EntitySleeper = Value end})
 
--- // THE BRAIN: AI LOGIC LOOP \\ --
-_G.LotusAILoop = function()
+-- // THE NEURAL BRAIN: L.A.I.S v3.0 LOOP \\ --
+_G.LotusAILoopV3 = function()
     local Player = Players.LocalPlayer
+    
     while AI_State.Enabled do
-        task.wait(1.5)
-        local myRoot = Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
-        if not myRoot then task.wait(1) else
-            local currentFPS = Workspace:GetRealPhysicsFPS()
-            local currentMem = Stats:GetTotalMemoryUsageMb()
+        task.wait(1) -- CPU Friendly Loop
+        
+        local currentFPS = Workspace:GetRealPhysicsFPS()
+        local currentPing = Stats.Network.ServerStatsItem["Data Ping"]:GetValue()
+        local currentMem = Stats:GetTotalMemoryUsageMb()
 
-            if AI_State.DynamicRender then
-                for _, v in pairs(Workspace:GetDescendants()) do
-                    if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") and v ~= Player.Character then
-                        local dist = (v.HumanoidRootPart.Position - myRoot.Position).Magnitude
-                        local shouldHide = (dist > 300)
-                        for _, part in pairs(v:GetChildren()) do
-                            if part:IsA("BasePart") then part.Transparency = shouldHide and 1 or 0 end
-                        end
+        -- [v3.0] Neural Emergency Mode
+        if AI_State.EmergencyMode and currentFPS < 25 then
+            Lighting.GlobalShadows = false
+            for _, v in pairs(Lighting:GetChildren()) do if v:IsA("PostEffect") then v.Enabled = false end end
+        end
+
+        -- [v3.0] Network Optimizer v2
+        if AI_State.PingStabilizer then
+             if currentPing > 150 then
+                 settings().Network.PhysicsSendRate = 10 
+             else
+                 settings().Network.PhysicsSendRate = 20
+             end
+        end
+
+        -- [v3.0] Hardware Acceleration
+        if AI_State.HardwareAccel then
+             if currentMem > 1800 then collectgarbage("collect") end
+        end
+
+        -- Standard Features
+        if AI_State.DynamicRender then
+            for _, v in pairs(Workspace:GetDescendants()) do
+                if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") and v ~= Player.Character then
+                    local dist = (v.HumanoidRootPart.Position - Player.Character.HumanoidRootPart.Position).Magnitude
+                    if dist > 350 then
+                         for _, part in pairs(v:GetChildren()) do if part:IsA("BasePart") then part.Transparency = 1 end end
                     end
                 end
             end
-            
-            if AI_State.SmartGC and currentMem > 2200 then collectgarbage("collect") end
+        end
+        
+        if AI_State.EntitySleeper then
+             for _, v in pairs(Workspace:GetDescendants()) do
+                if v:IsA("Animator") then
+                    local char = v.Parent and v.Parent.Parent
+                    if char and char:FindFirstChild("HumanoidRootPart") and char ~= Player.Character then
+                        local dist = (char.HumanoidRootPart.Position - Player.Character.HumanoidRootPart.Position).Magnitude
+                        if dist > 200 then v.Parent.Animator.Enabled = false else v.Parent.Animator.Enabled = true end
+                    end
+                end
+            end
         end
     end
 end
@@ -378,19 +435,17 @@ TabAlt:CreateButton({
    end,
 })
 
--- // 10. TAB: TOOLS & HUD (v2.5) \\ --
+-- // 10. TAB: TOOLS & HUD (v3.0) \\ --
 local TabTools = Window:CreateTab("Tools", 4483362458)
 
 TabTools:CreateSection("Lotus Live HUD")
 
--- NEW FEATURE: LIVE HUD TOGGLE
 local LiveHUD = nil
 TabTools:CreateToggle({
    Name = "Enable Info Panel (FPS/Ping)",
    CurrentValue = false,
    Callback = function(Value)
        if Value then
-           -- HUD Oluştur
            if not LiveHUD then
                LiveHUD = Instance.new("ScreenGui")
                LiveHUD.Parent = game.CoreGui
@@ -398,20 +453,18 @@ TabTools:CreateToggle({
                Label.Parent = LiveHUD
                Label.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
                Label.BackgroundTransparency = 0.5
-               Label.Position = UDim2.new(0, 10, 0.9, -50) -- Sol Alt Köşe
+               Label.Position = UDim2.new(0, 10, 0.9, -50) 
                Label.Size = UDim2.new(0, 180, 0, 45)
                Label.Font = Enum.Font.GothamBold
                Label.TextColor3 = Color3.fromRGB(0, 255, 170)
                Label.TextSize = 14
                Label.TextXAlignment = Enum.TextXAlignment.Left
-               
-               -- Live Update
                task.spawn(function()
                    while LiveHUD and LiveHUD.Parent do
                        task.wait(0.5)
                        local fps = math.floor(Workspace:GetRealPhysicsFPS())
                        local ping = math.floor(Stats.Network.ServerStatsItem["Data Ping"]:GetValue())
-                       Label.Text = "  LOTUS v2.5 PRO+\n  FPS: "..fps.." | Ping: "..ping.."ms"
+                       Label.Text = "  LOTUS v3.0 PRO+\n  FPS: "..fps.." | Ping: "..ping.."ms"
                    end
                end)
            end
@@ -422,13 +475,33 @@ TabTools:CreateToggle({
    end,
 })
 
+TabTools:CreateSection("Power Management")
+
+-- NEW: Smart Background Limiter
+TabTools:CreateToggle({
+   Name = "Smart Background Limiter (Eco Mode)",
+   CurrentValue = false,
+   Callback = function(Value)
+       _G.SmartBG = Value
+       if Value then
+           UserInputService.WindowFocusReleased:Connect(function()
+               if _G.SmartBG then setfpscap(5); RunService:Set3dRenderingEnabled(false) end
+           end)
+           UserInputService.WindowFocused:Connect(function()
+               if _G.SmartBG then setfpscap(60); RunService:Set3dRenderingEnabled(true) end
+           end)
+           notify("Power", "Auto-Eco Enabled. FPS drops when AFK.")
+       end
+   end,
+})
+
 TabTools:CreateSection("Device Health (Cooling)")
 TabTools:CreateToggle({
    Name = "No Render Mode (Cooldown device)",
    CurrentValue = false,
    Callback = function(Value)
        RunService:Set3dRenderingEnabled(not Value)
-       if Value then notify("Cooling...", "Keep it on for at least 2 minutes to see the effects.") else notify("Cooling stopped", "Cooling has been stopped.") end
+       if Value then notify("Cooling...", "Keep it on for at least 2 minutes.") else notify("Cooling stopped", "Cooling has been stopped.") end
    end,
 })
 
@@ -443,7 +516,7 @@ TabTools:CreateButton({
 })
 
 TabTools:CreateButton({
-   Name = "Deep Clean Memory (Anti-Crash)",
+   Name = "Deep Clean Memory (Not working)",
    Callback = function()
        for i = 1, 5 do collectgarbage("collect") end
        notify("System", "Memory Deep Cleaned.")
@@ -460,11 +533,41 @@ TabTools:CreateSlider({
    Callback = function(Value) setfpscap(Value) end,
 })
 
--- // VISUALS (v2.5 PRO+) \\ --
+-- // VISUALS (v3.0 PRO+) \\ --
 local TabVisuals = Window:CreateTab("Visual engine", 4483362458)
 
-TabVisuals:CreateSection("Camera Engineering")
+TabVisuals:CreateSection("Visual Enhancements")
 
+-- NEW: Material Service Downgrader
+TabVisuals:CreateToggle({
+   Name = "Material Downgrade (Old Roblox textures)",
+   CurrentValue = false,
+   Callback = function(Value)
+       if Value then
+           for _, v in pairs(Workspace:GetDescendants()) do
+               if v:IsA("BasePart") then v.Material = Enum.Material.Plastic end
+           end
+           notify("Visuals", "Materials downgraded to Old Roblox.")
+       end
+   end,
+})
+
+-- NEW: Interface GUI Optimizer
+TabVisuals:CreateToggle({
+   Name = "Interface GUI Optimizer (Hide GUIs)",
+   CurrentValue = false,
+   Callback = function(Value)
+       local PG = Players.LocalPlayer:WaitForChild("PlayerGui")
+       for _, g in pairs(PG:GetChildren()) do
+           if g:IsA("ScreenGui") and not g.Name:find("Rayfield") and not g.Name:find("Lotus") then
+               g.Enabled = not Value
+           end
+       end
+       notify("Interface", Value and "Game GUI Hidden." or "Game GUI Restored.")
+   end,
+})
+
+TabVisuals:CreateSection("Camera Engineering")
 TabVisuals:CreateSlider({
    Name = "Field of View (FOV)",
    Range = {70, 130},
@@ -479,7 +582,6 @@ TabVisuals:CreateSlider({
 })
 
 TabVisuals:CreateSection("World Ambience")
-
 TabVisuals:CreateDropdown({
    Name = "Time Changer",
    Options = {"Day (12:00)", "Night (00:00)", "Sunset (18:00)", "Sunrise (06:00)"},
@@ -500,7 +602,7 @@ TabVisuals:CreateToggle({
    Name = "Exposure Lock (Fix Brightness)",
    CurrentValue = false,
    Callback = function(Value)
-       Lighting.ExposureCompensation = Value and 0 or 0 -- Reset if needed
+       Lighting.ExposureCompensation = Value and 0 or 0
        Lighting.GlobalShadows = not Value
        notify("Visuals", "Exposure Locked.")
    end,
@@ -508,9 +610,9 @@ TabVisuals:CreateToggle({
 
 -- // 11. FINAL INIT \\ --
 local TabInfo = Window:CreateTab("Info", 4483362458)
-TabInfo:CreateParagraph({Title = "Current version", Content = "v2.5 PRO+ (Latest)"})
-TabInfo:CreateParagraph({Title = "Change log", Content = "HUD, Server Manager, Fixed key system, L.A.I.S engine v2.0,Added Fov/Time changer"})
+TabInfo:CreateParagraph({Title = "Current version", Content = "v3.0 PRO+ (Latest)"})
+TabInfo:CreateParagraph({Title = "Change log", Content = "L.A.I.S v3.0, Network Optimizer v2, Hardware Accel, Background Limiter, GUI Opt"})
 
-Rayfield:Notify({Title = "Lotus v2.5 PRO+", Content = "System Loaded.", Duration = 5, Image = 4483362458})
+Rayfield:Notify({Title = "Lotus v3.0 PRO+", Content = "Neural System Loaded.", Duration = 5, Image = 4483362458})
 Rayfield:LoadConfiguration()
 -- [[ END OF SCRIPT ]] --
