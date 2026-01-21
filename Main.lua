@@ -148,7 +148,7 @@ TabBalanced:CreateButton({
 -- [[ START OF PART 3 ]] --
 
 -- // 6. TAB: AGGRESSIVE OPTIMIZATION \\ --
-local TabAggressive = Window:CreateTab("Aggressive", 4483362458)
+local TabAggressive = Window:CreateTab("Aggressive Opt.", 4483362458)
 
 TabAggressive:CreateSection("Smart Cleanup (Non-Destructive)")
 TabAggressive:CreateButton({
@@ -211,7 +211,7 @@ TabAggressive:CreateButton({
 })
 
 -- // 7. TAB: NUCLEAR (EXTREME) \\ --
-local TabNuclear = Window:CreateTab("NUCLEAR", 4483362458)
+local TabNuclear = Window:CreateTab("NUCLEAR Opt.", 4483362458)
 
 TabNuclear:CreateSection("Disable map parts (DESTRUCTIVE)")
 TabNuclear:CreateButton({
@@ -279,7 +279,7 @@ TabServer:CreateButton({
 -- [[ START OF PART 4 ]] --
 
 -- // 8. TAB: LOTUS AI (L.A.I.S - INTELLIGENT CORE v2.0) \\ --
-local TabAI = Window:CreateTab("Lotus AI", 4483362458)
+local TabAI = Window:CreateTab("L.A.I.S Core", 4483362458)
 
 local AI_State = {
     Enabled = false,
@@ -293,13 +293,13 @@ local AI_State = {
 TabAI:CreateSection("L.A.I.S Main Switch")
 
 TabAI:CreateToggle({
-   Name = "ACTIVATE AI ENGINE (Master Switch)",
+   Name = "ACTIVATE AI ENGINE",
    CurrentValue = false,
    Flag = "AI_Master", 
    Callback = function(Value)
        AI_State.Enabled = Value
        if Value then
-           notify("L.A.I.S", "Engine Online. Analysis Started.")
+           notify("L.A.I.S", "Engine Online. Smart boost started.")
            task.spawn(function() _G.LotusAILoop() end)
        else
            notify("L.A.I.S", "Engine Offline.")
@@ -307,7 +307,7 @@ TabAI:CreateToggle({
    end,
 })
 
-TabAI:CreateSection("ENGINEERING (PRO FEATURES)")
+TabAI:CreateSection("PRO FEATURES(BETA)")
 
 TabAI:CreateToggle({
    Name = "Active Frustum Culling (BETA)",
@@ -386,7 +386,7 @@ TabTools:CreateSection("Lotus Live HUD")
 -- NEW FEATURE: LIVE HUD TOGGLE
 local LiveHUD = nil
 TabTools:CreateToggle({
-   Name = "Enable Info Panel (FPS/Ping/AI)",
+   Name = "Enable Info Panel (FPS/Ping)",
    CurrentValue = false,
    Callback = function(Value)
        if Value then
